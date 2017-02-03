@@ -14,12 +14,21 @@ class Education extends Model
     public $timestamps = false;
 
     /**
-     * Get the family cards for the education.
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * Get the residents for the education.
      *
      * @return \Illuminate\Database\Eloquent\HasMany
      */
-    public function familyCards()
+    public function residents()
     {
-        return $this->hasMany(FamilyCard::class);
+        return $this->hasMany(Resident::class);
     }
 }

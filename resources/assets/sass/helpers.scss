@@ -1,0 +1,26 @@
+@import 'mixins/build-padding';
+@import 'mixins/build-margin';
+@import 'mixins/build-height';
+
+$minPadding: 0;
+$maxPadding: 100;
+
+$minMargin: 0;
+$maxMargin: 100;
+
+$minHeight: 0;
+$maxHeight: 400;
+
+@for $i from $minPadding through $maxPadding {
+  @include build-padding($i)
+  @include build-padding-min($i)
+}
+
+@for $i from $minMargin through $maxMargin {
+  @include build-margin($i)
+  @include build-margin-min($i)
+}
+
+@for $i from $minHeight through $maxHeight {
+  @include build-height($i)
+}

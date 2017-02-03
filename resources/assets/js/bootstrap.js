@@ -8,8 +8,11 @@ window._ = require('lodash');
  */
 
 window.$ = window.jQuery = require('jquery');
+require('bootstrap-less');
 
-require('bootstrap-sass');
+require('admin-lte');
+window.toastr = require('toastr');
+require('icheck');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -18,6 +21,7 @@ require('bootstrap-sass');
  */
 
 window.Vue = require('vue');
+require('vue-resource');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -28,7 +32,7 @@ window.Vue = require('vue');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
-    'X-Requested-With': 'XMLHttpRequest'
+  'X-Requested-With': 'XMLHttpRequest'
 };
 
 /**

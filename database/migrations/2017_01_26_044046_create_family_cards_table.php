@@ -21,10 +21,6 @@ class CreateFamilyCardsTable extends Migration
             $table->string('rw');
             $table->bigInteger('village_id')->unsigned();
             $table->foreign('village_id')->references('id')->on('villages')->onDelete('cascade');
-            $table->bigInteger('education_id')->unsigned();
-            $table->foreign('education_id')->references('id')->on('education')->onDelete('cascade');
-            $table->bigInteger('job_id')->unsigned();
-            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
             $table->timestamp('issued_on');
             $table->timestamps();
         });

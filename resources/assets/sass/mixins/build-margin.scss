@@ -1,0 +1,13 @@
+@mixin build-margin($value) {
+  .m-t-#{$value} { margin-top: #{$value}px !important; }
+  .m-r-#{$value} { margin-right: #{$value}px !important; }
+  .m-b-#{$value} { margin-bottom: #{$value}px !important; }
+  .m-l-#{$value} { margin-left: #{$value}px !important; }
+}
+
+@mixin build-margin-min($value) {
+	.m-t-min-#{$value} { margin-top: -#{$value}px !important; }
+	.m-r-min-#{$value} { margin-right: -#{$value}px !important; }
+	.m-b-min-#{$value} { margin-bottom: -#{$value}px !important; }
+	.m-l-min-#{$value} { margin-left: -#{$value}px !important; }
+}

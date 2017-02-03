@@ -14,12 +14,21 @@ class Job extends Model
     public $timestamps = false;
 
     /**
-     * Get the family cards for the job.
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * Get the residents for the job.
      *
      * @return \Illuminate\Database\Eloquent\HasMany
      */
-    public function familyCards()
+    public function residents()
     {
-        return $this->hasMany(FamilyCard::class);
+        return $this->hasMany(Resident::class);
     }
 }

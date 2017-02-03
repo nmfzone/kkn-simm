@@ -14,6 +14,15 @@ class Village extends Model
     public $timestamps = false;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
      * Get the family cards for the village.
      *
      * @return \Illuminate\Database\Eloquent\HasMany
@@ -21,5 +30,15 @@ class Village extends Model
     public function familyCards()
     {
         return $this->hasMany(FamilyCard::class);
+    }
+
+    /**
+     * Get the sub district that the village belong to.
+     *
+     * @return \Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function subDistrict()
+    {
+        return $this->belongsTo(SubDistrict::class);
     }
 }

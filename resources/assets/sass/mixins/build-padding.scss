@@ -1,0 +1,13 @@
+@mixin build-padding($value) {
+  .p-t-#{$value} { padding-top: #{$value}px !important; }
+  .p-r-#{$value} { padding-right: #{$value}px !important; }
+  .p-b-#{$value} { padding-bottom: #{$value}px !important; }
+  .p-l-#{$value} { padding-left: #{$value}px !important; }
+}
+
+@mixin build-padding-min($value) {
+	.p-t-min-#{$value} { padding-top: -#{$value}px !important; }
+	.p-r-min-#{$value} { padding-right: -#{$value}px !important; }
+	.p-b-min-#{$value} { padding-bottom: -#{$value}px !important; }
+	.p-l-min-#{$value} { padding-left: -#{$value}px !important; }
+}

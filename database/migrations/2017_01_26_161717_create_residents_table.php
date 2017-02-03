@@ -14,7 +14,14 @@ class CreateResidentsTable extends Migration
     public function up()
     {
         Schema::create('residents', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->string('nik');
+            $table->string('gender');
+            $table->boolean('is_patriarch')->default(false);
+            $table->bigInteger('education_id')->unsigned();
+            $table->foreign('education_id')->references('id')->on('education')->onDelete('cascade');
+            $table->bigInteger('job_id')->unsigned();
+            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
             $table->timestamps();
         });
     }
