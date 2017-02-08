@@ -1,8 +1,1 @@
-body,
-label,
-.checkbox label {
-  font-weight: 300;
-}
-.error-page {
-  background-color: #ecf0f5;
-}
+.checkbox label,body,label{font-weight:300}.error-page{background-color:#ecf0f5}
