@@ -82,4 +82,24 @@ class Resident extends Model
     {
         return $this->belongsTo(Education::class);
     }
+
+    /**
+     * Get the marital status that the resident belong to.
+     *
+     * @return \Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function maritalStatus()
+    {
+        return $this->belongsTo(MaritalStatus::class);
+    }
+
+    /**
+     * The disabilities that belong to the resident.
+     *
+     * @return \Illuminate\Database\Eloquent\BelongsToMany
+     */
+    public function disabilities()
+    {
+        return $this->belongsToMany(Disability::class);
+    }
 }

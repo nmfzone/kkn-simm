@@ -28,6 +28,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .copy('node_modules/ionicons/dist/fonts/*.*', 'public/fonts')
    .copy('node_modules/admin-lte/bootstrap/fonts/*.*', 'public/fonts/bootstrap')
    .copy('node_modules/admin-lte/dist/css/skins/*.*', 'public/css/skins')
-   .copy('node_modules/admin-lte/plugins', 'public/plugins')
+   .copy('node_modules/admin-lte/plugins', 'public/plugins', false)
    .copy('node_modules/icheck/skins/square/blue.png', 'public/css')
    .copy('node_modules/icheck/skins/square/blue@2x.png', 'public/css');

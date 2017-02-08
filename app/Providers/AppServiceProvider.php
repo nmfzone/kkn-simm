@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services;
 use Illuminate\Support\ServiceProvider;
 use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\Database;
@@ -27,7 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            Services\UserService::class,
+            Services\Implementations\UserServiceImplementation::class
+        );
     }
 
     /**

@@ -8,10 +8,15 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
-//Ionicons
+// Ionicons
 @import "node_modules/ionicons/dist/scss/ionicons";
 
-//Font awesome
+// Font awesome
 @import "node_modules/font-awesome/scss/font-awesome";
 
+// SweetAlert
+@import "node_modules/sweetalert/dev/sweetalert";
+
 @import "helpers";
+
+@import "custom";

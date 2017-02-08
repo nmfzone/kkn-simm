@@ -15,13 +15,19 @@ class CreateResidentsTable extends Migration
     {
         Schema::create('residents', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
             $table->string('nik');
             $table->string('gender');
-            $table->boolean('is_patriarch')->default(false);
-            $table->bigInteger('education_id')->unsigned();
+            $table->timestamp('date_of_birth');
+            $table->bigInteger('hometown_id')->unsigned();
+            $table->foreign('hometown_id')->references('id')->on('districts')->onDelete('cascade');
+            $table->integer('marital_status_id')->unsigned();
+            $table->foreign('marital_status_id')->references('id')->on('marital_statuses')->onDelete('cascade');
+            $table->integer('education_id')->unsigned();
             $table->foreign('education_id')->references('id')->on('education')->onDelete('cascade');
-            $table->bigInteger('job_id')->unsigned();
+            $table->integer('job_id')->unsigned();
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
+            $table->boolean('is_patriarch')->default(false);
             $table->timestamps();
         });
     }

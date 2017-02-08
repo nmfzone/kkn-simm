@@ -17,4 +17,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     #adminlte_routes
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/users/get-users', 'UsersController@getUsers')->name('users.getUsers');
+        Route::resource('/users', 'UsersController');
+    });
 });

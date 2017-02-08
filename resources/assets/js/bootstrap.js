@@ -7,7 +7,7 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery');
+global.$ = global.jQuery = require('jquery');
 require('bootstrap-less');
 
 require('admin-lte');
@@ -47,3 +47,6 @@ window.axios.defaults.headers.common = {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+require('sweetalert');
+require('./custom');

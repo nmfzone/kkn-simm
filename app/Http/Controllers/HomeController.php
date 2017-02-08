@@ -24,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // alert()->success('halo')->persistent("Close");
+
         return view('adminlte::home');
     }
 }

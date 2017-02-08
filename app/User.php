@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password', 'is_banned'
+        'name', 'username', 'password',
     ];
 
     /**
@@ -36,6 +36,15 @@ class User extends Authenticatable
      */
     protected $casts = [
         'is_banned' => 'boolean',
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'last_login'
     ];
 
     /**
@@ -58,5 +67,31 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * Get the last login attribute.
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public function getLastLoginAttribute($value)
+    {
+        return $value ?
+            $value :
+            trans('auth.last_login_value');
+    }
+
+    /**
+     * Get the profile photo URL attribute.
+     *
+     * @param string|null $value
+     * @return string
+     */
+    public function getPhotoUrlAttribute($value)
+    {
+        return $value ?
+            url(Storage::disk('public')->url($value)) :
+            url('img/profile/user-default.png');
     }
 }
