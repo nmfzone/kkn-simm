@@ -19,6 +19,12 @@ Route::group(['middleware' => 'auth'], function () {
     #adminlte_routes
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/users/get-users', 'UsersController@getUsers')->name('users.getUsers');
+        Route::post('/users/{user}/banned', 'UsersController@banned')->name('users.banned');
         Route::resource('/users', 'UsersController');
+
+        Route::get('/family-cards/get-family-cards', 'FamilyCardsController@getFamilyCards')->name('family_cards.getFamilyCards');
+        Route::resource('/family-cards', 'FamilyCardsController', [
+            'names' => resourceNames('family_cards')
+        ]);
     });
 });

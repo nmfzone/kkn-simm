@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Http\Requests\UserRequest;
 use App\Services\UserService;
+use App\User;
 use Datatables;
-use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -32,6 +32,8 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $this->authorize('users.view');
+
         return view('users.index');
     }
 
@@ -42,18 +44,30 @@ class UsersController extends Controller
      */
     public function create()
     {
+        $this->authorize('users.create');
+
         return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $this->authorize('users.create');
+
+        $user = User::create($request->all());
+
+        if ($request->hasFile('photo')) {
+            $this->userService->storeMedia($request->photo, $user);
+        }
+
+        alert()->success(trans('message.ctrl.users.store'))->persistent("Close");
+
+        return redirect(route('users.index'));
     }
 
     /**
@@ -64,6 +78,8 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', $user);
+
         return view('users.show', compact('user'));
     }
 
@@ -75,19 +91,25 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('edit', $user);
+
         return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UserRequest  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $this->authorize('update', $user);
+
+        alert()->success(trans('message.ctrl.users.update'))->persistent("Close");
+
+        return back();
     }
 
     /**
@@ -98,7 +120,31 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('destroy', $user);
+
+        $user->delete();
+
+        alert()->success(trans('message.ctrl.users.destroy'))->persistent("Close");
+
+        return redirect(route('users.index'));
+    }
+
+    /**
+     * Banned the specified resource from the app.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function banned(User $user)
+    {
+        $this->authorize('users.banned');
+
+        $user->is_banned = true;
+        $user->save();
+
+        alert()->success(trans('message.ctrl.users.banned'))->persistent("Close");
+
+        return redirect(route('users.index'));
     }
 
     /**
@@ -110,9 +156,9 @@ class UsersController extends Controller
     {
         return Datatables::of(User::all())
             ->addColumn('action', function ($user) {
-                $action = '<a href="'. route('users.edit', $user) .'" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i> Edit</a>';
-                $action .= '<a href="'. route('users.show', $user) .'" class="btn btn-xs btn-success show-this m-l-10"><i class="fa fa-search-plus"></i> Lihat</a>';
-                // $action .= '<a href="'. route('users.banned', $user) .'" class="btn btn-xs btn-warning banned-this"><i class="glyphicon glyphicon-zoom-in"></i> Banned</a>';
+                $action = '<a href="'. route('users.show', $user) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
+                $action .= '<a href="'. route('users.edit', $user) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
+                $action .= '<a href="'. route('users.banned', $user) .'" class="btn btn-xs btn-warning banned-this m-l-10"><i class="fa fa-warning"></i> Banned</a>';
                 $action .= '<a href="'. route('users.destroy', $user) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i> Hapus</a>';
                 return $action;
             })

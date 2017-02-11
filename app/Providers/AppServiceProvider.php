@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App;
+use App\Observers;
 use App\Services;
+use Illuminate\Support\Facades\{Hash, Validator};
 use Illuminate\Support\ServiceProvider;
 use Silber\Bouncer\Bouncer;
 use Silber\Bouncer\Database;
@@ -18,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoles();
+        $this->registerEloquentObservers();
         $this->registerCustomValidations();
     }
 
@@ -35,13 +39,25 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register observers with the Models.
+     *
+     * @return void
+     */
+    protected function registerEloquentObservers()
+    {
+        App\User::observe(Observers\UserObserver::class);
+    }
+
+    /**
      * Register custom validation rules.
      *
      * @return void
      */
     protected function registerCustomValidations()
     {
-        //
+        Validator::extend('old_password', function($attribute, $value, $parameters, $validator) {
+            return Hash::check($value, $parameters[0]);
+        });
     }
 
     /**

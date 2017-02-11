@@ -12,7 +12,7 @@ class Resident extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'birth_date', 'is_patriarch',
+        'name', 'nik', 'gender', 'date_of_birth', 'is_patriarch',
     ];
 
     /**
@@ -30,8 +30,28 @@ class Resident extends Model
      * @var array
      */
     protected $dates = [
-        'birth_date',
+        'date_of_birth',
     ];
+
+    /**
+     * Scope a query to only include resident that is men.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMen($query)
+    {
+        return $query->where('gender', 'L');
+    }
+
+    /**
+     * Scope a query to only include resident that is women.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWomen($query)
+    {
+        return $query->where('gender', 'P');
+    }
 
     /**
      * Get the resident's photo.
@@ -101,5 +121,25 @@ class Resident extends Model
     public function disabilities()
     {
         return $this->belongsToMany(Disability::class);
+    }
+
+    /**
+     * Get total of the men's resident.
+     *
+     * @return integer
+     */
+    public function menTotal()
+    {
+        return $this->men()->count();
+    }
+
+    /**
+     * Get total of the women's resident.
+     *
+     * @return integer
+     */
+    public function womenTotal()
+    {
+        return $this->women()->count();
     }
 }

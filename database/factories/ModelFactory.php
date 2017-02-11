@@ -28,3 +28,68 @@ $factory->state(App\User::class, 'banned', function ($faker) {
         'status' => false,
     ];
 });
+
+$factory->define(App\Resident::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'nik' => $faker->numberBetween(3310042305070000, 3310042305080000),
+        'gender' => $faker->randomElement(['L', 'P']),
+        'date_of_birth' => $faker->dateTime,
+        'hometown_id' => App\District::all()->random()->id,
+        'marital_status_id' => App\MaritalStatus::all()->random()->id,
+        'education_id' => App\Education::all()->random()->id,
+        'job_id' => App\Job::all()->random()->id,
+    ];
+});
+
+$factory->define(App\Province::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+    ];
+});
+
+$factory->define(App\District::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->city,
+        'province_id' => App\Province::all()->random()->id,
+    ];
+});
+
+$factory->define(App\SubDistrict::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+        'postal_code' => $faker->postcode,
+        'district_id' => App\District::all()->random()->id,
+    ];
+});
+
+$factory->define(App\Village::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+        'sub_district_id' => App\SubDistrict::all()->random()->id,
+    ];
+});
+
+$factory->define(App\MaritalStatus::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(1),
+    ];
+});
+
+$factory->define(App\Education::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+    ];
+});
+
+$factory->define(App\Job::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+    ];
+});
+
+$factory->define(App\Disability::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence(2),
+    ];
+});

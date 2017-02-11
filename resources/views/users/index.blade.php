@@ -5,11 +5,11 @@
 @endsection
 
 @section('htmlheader_title')
-	{{ trans('message.users_manage') }}
+  {{ trans('message.users.manage') }}
 @endsection
 
 @section('contentheader_title')
-  {{ trans('message.users_manage') }}
+  {{ trans('message.users.manage') }}
 @endsection
 
 @section('main-content')
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">{{ trans('message.users_list') }}</div>
+					<div class="panel-heading">{{ trans('message.users.list') }}</div>
 
 					<div class="panel-body">
             <table class="table table-condensed the-tables" id="users-table">
@@ -42,7 +42,7 @@
   <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
-  <script>
+  <script type="text/javascript">
     $(function() {
       $('#users-table').DataTable({
         processing: true,
@@ -54,10 +54,10 @@
           { data: 'name', name: 'name' },
           { data: 'photo_url', name: 'photo_url', defaultContent: '-',
             render: function ( data, type, full, meta ) {
-              return `<img src="${data}" width="40" />`;
+              return `<img src="${data}" height="50" />`;
             }
           },
-          { data: 'action', name: 'action', orderable: false, searchable: false, width: '200px' }
+          { data: 'action', name: 'action', orderable: false, searchable: false, width: '250px' }
         ]
       });
     });

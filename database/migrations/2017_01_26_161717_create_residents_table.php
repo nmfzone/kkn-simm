@@ -17,7 +17,7 @@ class CreateResidentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('nik');
-            $table->string('gender');
+            $table->string('gender', 20);
             $table->timestamp('date_of_birth');
             $table->bigInteger('hometown_id')->unsigned();
             $table->foreign('hometown_id')->references('id')->on('districts')->onDelete('cascade');

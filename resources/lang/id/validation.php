@@ -79,11 +79,9 @@ return [
     'url'                  => 'Isian kolom :attribute tidak sesuai format.',
 
     // Pesan untuk kustom validasi
-    'date_after'            => 'Isian kolom :attribute harus tanggal setelah :value.',
-    'different_if_present'  => 'Isian kolom :attribute dan :other harus berbeda.',
-    'greater_than_time'     => 'Isian waktu kolom :attribute harus lebih dari isian waktu kolom :other.',
     'required_without_tags' => 'Kolom :attribute harus diisi.',
-    'positive'              => 'Kolom :attribute yang dimasukkan harus positif, tidak boleh negatif.',
+    'positive'              => 'Isian kolom :attribute yang dimasukkan harus positif, tidak boleh negatif.',
+    'old_password'          => 'Isian kolom :attribute tidak cocok dengan password anda sekarang.',
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +122,7 @@ return [
         'address'                   => 'alamat',
         'note'                      => 'catatan',
         'title'                     => 'judul',
+        'current_password'          => 'password sekarang',
     ],
 
 ];

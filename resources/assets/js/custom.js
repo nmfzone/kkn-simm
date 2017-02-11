@@ -22,7 +22,7 @@ $(function() {
       self.modalMessage           = link.data('message') || self.modalMessage;
       self.modalConfirmButtonText = link.data('button-text') || self.modalConfirmButtonText;
       self.url                    = link.attr('href');
-      self.laravelToken           = $("meta[name=token]").attr('content');
+      self.laravelToken           = $("meta[name=csrf-token]").attr('content');
 
       self.confirmDelete();
     },
@@ -91,7 +91,7 @@ $(function() {
       self.modalMessage           = link.data('message') || self.modalMessage;
       self.modalConfirmButtonText = link.data('button-text') || self.modalConfirmButtonText;
       self.url                    = link.attr('href');
-      self.laravelToken           = $("meta[name=token]").attr('content');
+      self.laravelToken           = $("meta[name=csrf-token]").attr('content');
 
       self.confirmBanned();
     },
@@ -125,14 +125,7 @@ $(function() {
           'value': this.laravelToken
         });
 
-      var hiddenInput =
-        $('<input>', {
-          'name': '_method',
-          'type': 'hidden',
-          'value': 'PUT'
-        });
-
-      return form.append(token, hiddenInput).appendTo('body').submit();
+      return form.append(token).appendTo('body').submit();
     }
   };
   banned.init();

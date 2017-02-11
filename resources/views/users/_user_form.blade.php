@@ -26,8 +26,30 @@
     </div>
 </div>
 
+@if (Route::is('users.edit'))
+  <div class="form-group{{ $errors->has('current_password') ? ' has-error' : '' }}">
+      <label class="col-md-4 control-label">Password Sekarang</label>
+
+      <div class="col-md-6">
+          <input type="password" class="form-control" name="current_password">
+
+          @if ($errors->has('current_password'))
+              <span class="help-block">
+                  <strong>{{ $errors->first('current_password') }}</strong>
+              </span>
+          @endif
+      </div>
+  </div>
+@endif
+
 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Password</label>
+    <label class="col-md-4 control-label">
+      @if (Route::is('users.edit'))
+        Password Baru
+      @else
+        Password
+      @endif
+    </label>
 
     <div class="col-md-6">
         <input type="password" class="form-control" name="password">
@@ -49,6 +71,20 @@
         @if ($errors->has('password_confirmation'))
             <span class="help-block">
                 <strong>{{ $errors->first('password_confirmation') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
+    <label class="col-md-4 control-label">Foto Profil</label>
+
+    <div class="col-md-6">
+        <image-upload input-name="photo"></image-upload>
+
+        @if ($errors->has('photo'))
+            <span class="help-block">
+                <strong>{{ $errors->first('photo') }}</strong>
             </span>
         @endif
     </div>
