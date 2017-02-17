@@ -5,11 +5,11 @@
 @endsection
 
 @section('htmlheader_title')
-  {{ trans('message.users.manage') }}
+  {{ trans('message.residents.manage') }}
 @endsection
 
 @section('contentheader_title')
-  {{ trans('message.users.manage') }}
+  {{ trans('message.residents.manage') }}
 @endsection
 
 @section('main-content')
@@ -17,17 +17,20 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">{{ trans('message.users.list') }}</div>
+					<div class="panel-heading">{{ trans('message.residents.list') }}</div>
 
 					<div class="panel-body">
-            <table class="table table-condensed the-tables" id="users-table">
+            <table class="table table-condensed the-tables" id="residents-table">
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Username</th>
                   <th>Nama</th>
-                  <th>Photo</th>
-                  <th>Aksi</th>
+                  <th>NIK</th>
+                  <th>Jenis Kelamin</th>
+                  <th>TTL</th>
+                  <th>Pendidikan</th>
+                  <th>Pekerjaan</th>
+                  <th width="70px">Aksi</th>
                 </tr>
               </thead>
             </table>
@@ -42,22 +45,29 @@
   <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
-  <script>
+  <script type="text/javascript">
     $(function() {
-      $('#users-table').DataTable({
+      $('#residents-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('users.getUsers') !!}',
+        ajax: '{!! route('residents.getResidents') !!}',
         columns: [
           { data: 'id', name: 'id' },
-          { data: 'username', name: 'username' },
           { data: 'name', name: 'name' },
-          { data: 'photo_url', name: 'photo_url', defaultContent: '-',
-            render: function ( data, type, full, meta ) {
-              return `<img src="${data}" width="40" />`;
+          { data: 'nik', name: 'nik' },
+          { data: 'gender', name: 'gender' , defaultContent: '-',
+            render: function( data, type, full, meta ) {
+              return `<center>${data}</center>`;
             }
           },
-          { data: 'action', name: 'action', orderable: false, searchable: false, width: '250px' }
+          { data: null, defaultContent: '-', orderable: false, searchable: false,
+            render: function ( data, type, full, meta ) {
+              return full.hometown.name + ', ' + Date.parse(full.date_of_birth).toString('d-M-yyyy');
+            }
+          },
+          { data: 'education.name', name: 'education.name' },
+          { data: 'job.name', name: 'job.name' },
+          { data: 'action', name: 'action', orderable: false, searchable: false, width: '180px' }
         ]
       });
     });

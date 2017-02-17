@@ -15,6 +15,7 @@ return [
 
     'failed'   => 'Identitas yang anda masukkan tidak ditemukan.',
     'throttle' => 'Anda terlalu banyak login. Silahkan coba lagi dalam :seconds detik.',
+    'banned' => 'Anda telah di banned dari sistem kami.',
 
     'login' => 'Masuk',
     'register' => 'Daftar',

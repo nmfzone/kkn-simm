@@ -23,6 +23,15 @@ class Education extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'residentsTotal',
+    ];
+
+    /**
      * Get the residents for the education.
      *
      * @return \Illuminate\Database\Eloquent\HasMany
@@ -30,5 +39,26 @@ class Education extends Model
     public function residents()
     {
         return $this->hasMany(Resident::class);
+    }
+
+    /**
+     * Get residents that has specific education.
+     *
+     * @param  \App\Education  $education
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function residentsWhoHave(Education $education)
+    {
+        return $this->residents()->where('education_id', $education->id);
+    }
+
+    /**
+     * Get total of the resident that has education.
+     *
+     * @return integer
+     */
+    public function getResidentsTotalAttribute()
+    {
+        return $this->residents()->count();
     }
 }

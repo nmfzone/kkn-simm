@@ -16,6 +16,7 @@ class CreateFamilyCardMemberTable extends Migration
         Schema::create('family_card_member', function (Blueprint $table) {
             $table->unsignedBigInteger('family_card_id');
             $table->unsignedBigInteger('resident_id');
+            $table->boolean('is_patriarch')->default(false);
             $table->index(['family_card_id', 'resident_id']);
         });
     }

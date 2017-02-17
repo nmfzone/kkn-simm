@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Resident extends Model
@@ -12,16 +13,8 @@ class Resident extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'nik', 'gender', 'date_of_birth', 'is_patriarch',
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'is_patriarch' => 'boolean',
+        'name', 'nik', 'gender', 'date_of_birth', 'hometown_id',
+        'job_id', 'education_id', 'marital_status_id',
     ];
 
     /**
@@ -32,6 +25,78 @@ class Resident extends Model
     protected $dates = [
         'date_of_birth',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'age',
+    ];
+
+    /**
+     * Get the age of the resident.
+     *
+     * @return integer
+     */
+    public function getAgeAttribute()
+    {
+        return $this->date_of_birth->diffInYears();
+    }
+
+    /**
+     * Scope a query to only include resident that is patriarch.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBalita($query)
+    {
+        return $query->where('date_of_birth', '>=', Carbon::now()->addYears(-5));
+    }
+
+    /**
+     * Scope a query to only include resident that is patriarch.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAnakAnak($query)
+    {
+        return $query->where('date_of_birth', '>=', Carbon::now()->addYears(-15))
+            ->where('date_of_birth', '<', Carbon::now()->addYears(-5));
+    }
+
+    /**
+     * Scope a query to only include resident that is patriarch.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRemaja($query)
+    {
+        return $query->where('date_of_birth', '>=', Carbon::now()->addYears(-21))
+            ->where('date_of_birth', '<', Carbon::now()->addYears(-15));
+    }
+
+    /**
+     * Scope a query to only include resident that is patriarch.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeProduktif($query)
+    {
+        return $query->where('date_of_birth', '>=', Carbon::now()->addYears(-50))
+            ->where('date_of_birth', '<', Carbon::now()->addYears(-21));
+    }
+
+    /**
+     * Scope a query to only include resident that is patriarch.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLansia($query)
+    {
+        return $query->where('date_of_birth', '<', Carbon::now()->addYears(-50));
+    }
 
     /**
      * Scope a query to only include resident that is men.
@@ -51,6 +116,42 @@ class Resident extends Model
     public function scopeWomen($query)
     {
         return $query->where('gender', 'P');
+    }
+
+    /**
+     * Scope a query to only include resident in dukuh.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDukuh($query, $dukuh)
+    {
+        return $query->whereHas('familyCards', function ($query) use ($dukuh) {
+            $query->where('dukuh', $dukuh);
+        }, '>', 0);
+    }
+
+    /**
+     * Scope a query to only include resident in rt.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRT($query, $rt)
+    {
+        return $query->whereHas('familyCards', function ($query) use ($rt) {
+            $query->where('rt', $rt);
+        }, '>', 0);
+    }
+
+    /**
+     * Scope a query to only include resident in rw.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRW($query, $rw)
+    {
+        return $query->whereHas('familyCards', function ($query) use ($rw) {
+            $query->where('rw', $rw);
+        }, '>', 0);
     }
 
     /**
@@ -81,6 +182,16 @@ class Resident extends Model
     public function familyCard()
     {
         return $this->familyCards()->latest();
+    }
+
+    /**
+     * Get the hometown (district) that the resident belong to.
+     *
+     * @return \Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function hometown()
+    {
+        return $this->belongsTo(District::class);
     }
 
     /**
@@ -121,25 +232,5 @@ class Resident extends Model
     public function disabilities()
     {
         return $this->belongsToMany(Disability::class);
-    }
-
-    /**
-     * Get total of the men's resident.
-     *
-     * @return integer
-     */
-    public function menTotal()
-    {
-        return $this->men()->count();
-    }
-
-    /**
-     * Get total of the women's resident.
-     *
-     * @return integer
-     */
-    public function womenTotal()
-    {
-        return $this->women()->count();
     }
 }

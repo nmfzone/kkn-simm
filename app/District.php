@@ -19,7 +19,7 @@ class District extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'name', 'province_id',
     ];
 
     /**
@@ -40,5 +40,15 @@ class District extends Model
     public function province()
     {
         return $this->belongsTo(Province::class);
+    }
+
+    /**
+     * Get the resident that the district belong to.
+     *
+     * @return \Illuminate\Database\Eloquent\BelongsTo
+     */
+    public function residents()
+    {
+        return $this->belongsTo(Resident::class);
     }
 }

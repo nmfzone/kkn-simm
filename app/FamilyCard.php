@@ -12,8 +12,58 @@ class FamilyCard extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'address', 'rt', 'rw', 'issued_on'
+        'number', 'dukuh', 'rt', 'rw', 'issued_on', 'village_id',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'patriarch',
+        'nonPatriarch'
+    ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = [
+        'members',
+        'village',
+    ];
+
+    /**
+     * Scope a query to only include family cards in dukuh.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDukuh($query, $dukuh)
+    {
+        return $query->where('dukuh', $dukuh);
+    }
+
+    /**
+     * Scope a query to only include family cards in rt.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRT($query, $rt)
+    {
+        return $query->where('rt', $rt);
+    }
+
+    /**
+     * Scope a query to only include family cards in rw.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRW($query, $rw)
+    {
+        return $query->where('rw', $rw);
+    }
 
     /**
      * Get the village that the family card belong to.
@@ -38,12 +88,36 @@ class FamilyCard extends Model
     /**
      * Get the patriarch of the family card.
      *
-     * @return \App\Resident|null
+     * @return \App\FamilyCard|null
      */
-    public function patriarch()
+    public function getPatriarchAttribute()
     {
         return $this->members()
-            ->where('is_patriarch', true)
+            ->wherePivot('is_patriarch', true)
             ->first();
+    }
+
+    /**
+     * Get the members of the family card that is not a patriarch.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getNonPatriarchAttribute()
+    {
+        return $this->members()
+            ->wherePivot('is_patriarch', false)
+            ->get();
+    }
+
+    /**
+     * Get total of the member's family card (without patriarch).
+     *
+     * @return integer
+     */
+    public function memberTotal()
+    {
+        return ($total = $this->members()->count()) > 0
+            ? $total-1
+            : 0;
     }
 }

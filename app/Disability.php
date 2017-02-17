@@ -23,6 +23,15 @@ class Disability extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'residentsTotal',
+    ];
+
+    /**
      * The residents that belong to the disability.
      *
      * @return \Illuminate\Database\Eloquent\BelongsToMany
@@ -30,5 +39,26 @@ class Disability extends Model
     public function residents()
     {
         return $this->belongsToMany(Resident::class);
+    }
+
+    /**
+     * Get residents that has specific disability.
+     *
+     * @param  \App\Disability  $disability
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function residentsWhoHave(Disability $disability)
+    {
+        return $this->residents()->wherePivot('disability_id', $disability->id);
+    }
+
+    /**
+     * Get total of the resident that has disability.
+     *
+     * @return integer
+     */
+    public function getResidentsTotalAttribute()
+    {
+        return $this->residents()->count();
     }
 }

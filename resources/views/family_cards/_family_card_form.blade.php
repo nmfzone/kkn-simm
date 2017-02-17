@@ -1,3 +1,8 @@
+@section('stylesheets')
+  <link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('/plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
+
 <div class="row m-b-20">
   <div class="col-md-4 text-right">
     <h3><i class="fa fa-user"></i> Kartu Keluarga</h3>
@@ -5,73 +10,87 @@
 </div>
 
 <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">No. Kartu Keluarga</label>
+  <label class="col-md-4 control-label">No. Kartu Keluarga</label>
 
-    <div class="col-md-6">
-        @yield('input_number')
+  <div class="col-md-6">
+    @yield('input_number')
 
-        @if ($errors->has('number'))
-            <span class="help-block">
-                <strong>{{ $errors->first('number') }}</strong>
-            </span>
-        @endif
-    </div>
+    @if ($errors->has('number'))
+      <span class="help-block">
+        <strong>{{ $errors->first('number') }}</strong>
+      </span>
+    @endif
+  </div>
 </div>
 
-<div class="form-group{{ $errors->has('village') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Desa</label>
+<div class="form-group{{ $errors->has('village_id') ? ' has-error' : '' }}">
+  <label class="col-md-4 control-label">Desa</label>
 
-    <div class="col-md-6">
-        @yield('input_village')
+  <div class="col-md-6">
+    @yield('input_village')
 
-        @if ($errors->has('village'))
-            <span class="help-block">
-                <strong>{{ $errors->first('village') }}</strong>
-            </span>
-        @endif
-    </div>
+    @if ($errors->has('village_id'))
+      <span class="help-block">
+        <strong>{{ $errors->first('village_id') }}</strong>
+      </span>
+    @endif
+  </div>
 </div>
 
 <div class="form-group{{ $errors->has('dukuh') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Pedukuhan</label>
+  <label class="col-md-4 control-label">Pedukuhan</label>
 
-    <div class="col-md-6">
-        @yield('input_dukuh')
+  <div class="col-md-6">
+    @yield('input_dukuh')
 
-        @if ($errors->has('dukuh'))
-            <span class="help-block">
-                <strong>{{ $errors->first('dukuh') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group{{ $errors->has('rt') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">RT</label>
-
-    <div class="col-md-6">
-        @yield('input_rt')
-
-        @if ($errors->has('rt'))
-            <span class="help-block">
-                <strong>{{ $errors->first('rt') }}</strong>
-            </span>
-        @endif
-    </div>
+    @if ($errors->has('dukuh'))
+      <span class="help-block">
+        <strong>{{ $errors->first('dukuh') }}</strong>
+      </span>
+    @endif
+  </div>
 </div>
 
 <div class="form-group{{ $errors->has('rw') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">RW</label>
+  <label class="col-md-4 control-label">RW</label>
 
-    <div class="col-md-6">
-        @yield('input_rw')
+  <div class="col-md-6">
+    @yield('input_rw')
 
-        @if ($errors->has('rw'))
-            <span class="help-block">
-                <strong>{{ $errors->first('rw') }}</strong>
-            </span>
-        @endif
-    </div>
+    @if ($errors->has('rw'))
+      <span class="help-block">
+        <strong>{{ $errors->first('rw') }}</strong>
+      </span>
+    @endif
+  </div>
+</div>
+
+<div class="form-group{{ $errors->has('rt') ? ' has-error' : '' }}">
+  <label class="col-md-4 control-label">RT</label>
+
+  <div class="col-md-6">
+    @yield('input_rt')
+
+    @if ($errors->has('rt'))
+      <span class="help-block">
+        <strong>{{ $errors->first('rt') }}</strong>
+      </span>
+    @endif
+  </div>
+</div>
+
+<div class="form-group{{ $errors->has('issued_on') ? ' has-error' : '' }}">
+  <label class="col-md-4 control-label">Dikeluarkan pada</label>
+
+  <div class="col-md-6">
+    @yield('input_issued_on')
+
+    @if ($errors->has('issued_on'))
+      <span class="help-block">
+        <strong>{{ $errors->first('issued_on') }}</strong>
+      </span>
+    @endif
+  </div>
 </div>
 
 <div class="row m-b-20">
@@ -80,144 +99,161 @@
   </div>
 </div>
 
-<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Nama</label>
+<div class="form-group{{ $errors->has('patriarch') ? ' has-error' : '' }}">
+  <label class="col-md-4 control-label">Nama</label>
 
-    <div class="col-md-6">
-        @yield('input_name')
+  <div class="col-md-6">
+    @yield('input_patriarch')
 
-        @if ($errors->has('name'))
-            <span class="help-block">
-                <strong>{{ $errors->first('name') }}</strong>
-            </span>
-        @endif
-    </div>
+    @if ($errors->has('patriarch'))
+      <span class="help-block">
+        <strong>{{ $errors->first('patriarch') }}</strong>
+      </span>
+    @endif
+  </div>
 </div>
 
-<div class="form-group{{ $errors->has('nik') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">NIK</label>
-
-    <div class="col-md-6">
-        @yield('input_nik')
-
-        @if ($errors->has('nik'))
-            <span class="help-block">
-                <strong>{{ $errors->first('nik') }}</strong>
-            </span>
-        @endif
-    </div>
+<div class="row m-b-20">
+  <div class="col-md-4 text-right">
+    <h3{!! $errors->has('family_member_id.*') ? ' style="color:red"' : '' !!}><i class="fa fa-user"></i> Anggota Keluarga</h3>
+  </div>
 </div>
 
-<div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Jenis Kelamin</label>
+@if(! Route::is('family_cards.show'))
+  <div class="form-group">
+    <label class="col-md-4 control-label">Terdapat Anggota Keluarga ?</label>
 
     <div class="col-md-6">
-        @yield('input_gender')
-
-        @if ($errors->has('gender'))
-            <span class="help-block">
-                <strong>{{ $errors->first('gender') }}</strong>
-            </span>
-        @endif
+      @yield('input_family_member')
     </div>
-</div>
 
-<div class="form-group{{ $errors->has('district') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Tempat Lahir</label>
+    @if ($errors->has('family_member_id.*'))
+      <div class="error-message has-error">
+        <div class="form-group">
+          <label class="col-md-4 control-label"></label>
 
-    <div class="col-md-6">
-        @yield('input_district')
-
-        @if ($errors->has('district'))
+          <div class="col-md-6">
             <span class="help-block">
-                <strong>{{ $errors->first('district') }}</strong>
+              <strong>{{ $errors->first('family_member_id.*') }}</strong>
             </span>
-        @endif
+          </div>
+        </div>
+      </div>
+    @endif
+  </div>
+
+  <div class="member-box">
+    <div class="family-member">
+      <div class="member-list">
+        <div class="form-group">
+          <label class="col-md-4 control-label">Anggota 1</label>
+
+          <div class="col-md-6">
+            @yield('input_family_member_id')
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-<div class="form-group{{ $errors->has('date_of_birth') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Tanggal Lahir</label>
+    <div class="add-member">
+      <div class="form-group">
+        <label class="col-md-4 control-label"></label>
 
-    <div class="col-md-6">
-        @yield('input_date_of_birth')
-
-        @if ($errors->has('date_of_birth'))
-            <span class="help-block">
-                <strong>{{ $errors->first('date_of_birth') }}</strong>
-            </span>
-        @endif
+        <div class="col-md-6">
+          <i class="fa fa-plus add-btn"></i>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="form-group{{ $errors->has('education') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Pendidikan</label>
+  @section('javascripts')
+    <script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/select2/select2.min.js') }}" type="text/javascript"></script>
 
-    <div class="col-md-6">
-        @yield('input_education')
+    <script type="text/javascript">
+      $(function() {
+        $('input[name="date_of_birth"]').datepicker({
+          autoclose: true
+        });
+        $('.date_of_birth').datepicker({
+          autoclose: true
+        });
 
-        @if ($errors->has('education'))
-            <span class="help-block">
-                <strong>{{ $errors->first('education') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+        $('.search-village').select2();
+        $('.search-resident').select2();
 
-<div class="form-group{{ $errors->has('job') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Pekerjaan</label>
+        $('.has_member').change(function(event) {
+          var val = $(this).val();
+          var target = $('.member-box');
 
-    <div class="col-md-6">
-        @yield('input_job')
+          if (val === "0") {
+            target.hide();
+          } else {
+            target.show();
+          }
+        });
+        $('.has_member').change();
 
-        @if ($errors->has('job'))
-            <span class="help-block">
-                <strong>{{ $errors->first('job') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+        function cloneAndSetSearchResident(val) {
+          var el = $('.family-member > .member-list').last();
+          el.find('.search-resident').select2('destroy');
+          var el_target = el.clone();
+          var target = $('.family-member');
 
-<div class="form-group{{ $errors->has('disability') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Disabilitas</label>
+          var label = el_target.find('.control-label');
+          label.text('Anggota ' + (parseInt(label.text().split(" ")[1])+1));
+          el.find('.search-resident').select2();
+          target.append(el_target);
+          el_target.find('.search-resident').select2();
 
-    <div class="col-md-6">
-        @yield('input_disability')
+          if (typeof val !== 'undefined') {
+            el_target.find('.search-resident').val(parseInt(val)).trigger('change.select2');
+          }
+        }
 
-        @if ($errors->has('disability'))
-            <span class="help-block">
-                <strong>{{ $errors->first('disability') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+        $('.add-btn').click(function(event) {
+          cloneAndSetSearchResident();
+        });
 
-@section('stylesheets')
-  <link href="{{ asset('/plugins/datepicker/datepicker3.css') }}" rel="stylesheet" type="text/css" />
-@endsection
+        $('.family-member').ready(function() {
+          @php($familyMembers = old('family_member_id', isset($familyCard) ? $familyCard->nonPatriarch->pluck('id')->all() : null))
+          var members = {!! (! is_null($familyMembers)
+            ? json_encode($familyMembers)
+            : '[]') !!};
+          var el = $('.family-member > .member-list');
+          var has_member = $('.has_member').val();
 
-@section('javascripts')
-  <script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
-
-  <script type="text/javascript">
-    $(function() {
-      $('input[name="date_of_birth"]').datepicker({
-        autoclose: true
+          if (members.length > 0 && has_member == 1) {
+            if (members.length == 1) {
+              el.eq(0).find('.search-resident').val(members[0]).trigger('change.select2');
+            } else {
+              $.each(members, function(key, val) {
+                val = parseInt(val);
+                if (key == 0) {
+                  el.eq(key).find('.search-resident').val(val).trigger('change.select2');
+                } else {
+                  cloneAndSetSearchResident(val);
+                }
+              });
+            }
+          }
+        });
       });
-    });
-  </script>
+    </script>
+  @endsection
 
-@endsection
-
-{!! csrf_field() !!}
+  {!! csrf_field() !!}
+@endif
 
 @yield('optional')
 
 <div class="form-group">
-    <div class="col-md-6 col-md-offset-4">
-        <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
-        <button type="submit" class="btn btn-primary">
-            <i class="fa fa-btn fa-user"></i> @yield('submit_message')
-        </button>
-    </div>
+  <div class="col-md-6 col-md-offset-4">
+    <a href="{{ URL::previous() }}" class="btn btn-default">{{ trans('message.back') }}</a>
+    @if(! Route::is('family_cards.show'))
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-btn fa-user"></i> @yield('submit_message')
+      </button>
+    @endif
+  </div>
 </div>

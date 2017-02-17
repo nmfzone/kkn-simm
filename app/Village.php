@@ -19,7 +19,7 @@ class Village extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'name', 'sub_district_id',
     ];
 
     /**

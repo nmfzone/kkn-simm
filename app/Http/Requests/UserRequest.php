@@ -38,8 +38,6 @@ class UserRequest extends FormRequest
                 return [
                     'username' => 'required|alpha_dash|max:255|unique:users,username,' . $user->id,
                     'name' => 'required|max:255',
-                    'current_password' => 'required|old_password:' . $user->password,
-                    'password' => 'required_with:current_password|confirmed|min:6',
                     'photo' => 'mimes:png,jpg,gif,jpeg|max:1000',
                 ];
         }

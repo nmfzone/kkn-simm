@@ -19,7 +19,7 @@ class SubDistrict extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'postal_code'
+        'name', 'postal_code', 'district_id',
     ];
 
     /**

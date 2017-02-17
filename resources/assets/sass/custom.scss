@@ -18,3 +18,11 @@
 .main-footer {
   margin-left: 250px;
 }
+
+.add-btn {
+  font-size: 40px;
+
+  &:hover {
+    color: red;
+  }
+}

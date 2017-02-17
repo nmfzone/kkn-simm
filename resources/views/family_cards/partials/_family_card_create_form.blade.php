@@ -1,11 +1,11 @@
 @extends('family_cards._family_card_form')
 
 @section('input_number')
-    <input type="number" class="form-control" name="number" value="{{ old('number') }}">
+  <input type="number" class="form-control" name="number" value="{{ old('number') }}">
 @endsection
 
 @section('input_village')
-  <select class="form-control" name="village_id">
+  <select class="form-control search-village" name="village_id">
     @foreach(App\Village::all() as $village)
       <option value="{{ $village->id }}">{{ $village->name }}</option>
     @endforeach
@@ -14,88 +14,65 @@
 
 @section('input_dukuh')
   <select class="form-control" name="dukuh">
-    <option name="Sidowayah">Sidowayah</option>
-    <option name="Padasan">Padasan</option>
-  </select>
-@endsection
-
-@section('input_rt')
-  <select class="form-control" name="rt">
-    <option name="01">01</option>
-    <option name="02">02</option>
-    <option name="03">03</option>
-    <option name="04">04</option>
-    <option name="05">05</option>
-    <option name="06">06</option>
+    @foreach(App\Setting::getDukuh()->all() as $dukuh)
+      <option value="{{ $dukuh }}">{{ $dukuh }}</option>
+    @endforeach
   </select>
 @endsection
 
 @section('input_rw')
   <select class="form-control" name="rw">
-    <option name="01">01</option>
-    <option name="02">02</option>
-    <option name="03">03</option>
-    <option name="04">04</option>
-    <option name="05">05</option>
-    <option name="06">06</option>
+    @if(Auth::user()->isAn('Administrator'))
+      @foreach(App\Setting::getRW()->all() as $rw)
+        <option value="{{ $rw }}">{{ $rw }}</option>
+      @endforeach
+    @else
+      @php($rw = explode(' ', Auth::user()->position)[2])
+      <option value="{{ $rw }}">{{ $rw }}</option>
+    @endif
   </select>
 @endsection
 
-@section('input_name')
-    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-@endsection
-
-@section('input_nik')
-    <input type="text" class="form-control" name="nik" value="{{ old('nik') }}">
-@endsection
-
-@section('input_gender')
-  <select class="form-control" name="gender">
-    <option name="01">Laki-Laki</option>
-    <option name="02">Perempuan</option>
-  </select>
-@endsection
-
-@section('input_nik')
-    <input type="text" class="form-control" name="nik" value="{{ old('nik') }}">
-@endsection
-
-@section('input_district')
-  <select class="form-control" name="district_id">
-    @foreach(App\District::all() as $district)
-      <option value="{{ $district->id }}">{{ $district->name }}</option>
+@section('input_rt')
+  <select class="form-control" name="rt">
+    @foreach(App\Setting::getRT()->all() as $rt)
+      <option value="{{ $rt }}">{{ $rt }}</option>
     @endforeach
   </select>
 @endsection
 
-@section('input_date_of_birth')
-    <input type="text" class="form-control" name="date_of_birth" value="{{ old('date_of_birth') }}">
+@section('input_issued_on')
+  <input type="text" class="form-control date_of_birth" name="issued_on" value="{{ old('issued_on', '01/01/2010') }}"  placeholder="mm/dd/yyyy">
 @endsection
 
-@section('input_education')
-  <select class="form-control" name="education_id">
-    @foreach(App\Education::all() as $education)
-      <option value="{{ $education->id }}">{{ $education->name }}</option>
+@section('input_patriarch')
+  <select class="form-control search-resident" name="patriarch">
+    @foreach(App\Resident::all() as $resident)
+      <option value="{{ $resident->id }}">{{ $resident->name }}</option>
     @endforeach
   </select>
 @endsection
 
-@section('input_job')
-  <select class="form-control" name="job_id">
-    @foreach(App\Job::all() as $job)
-      <option value="{{ $job->id }}">{{ $job->name }}</option>
+@section('input_family_member')
+  <select class="form-control has_member" name="family_member">
+    @foreach (App\Setting::getSelection()->all() as $selection)
+      <option value="{{ $selection['id'] }}"
+        @if(old('family_member') === $selection['id'])
+          selected
+        @endif
+      >{{ $selection['name'] }}</option>
     @endforeach
   </select>
 @endsection
 
-@section('input_disability')
-  <select class="form-control" name="disability_id">
-    @foreach(App\Disability::all() as $disability)
-      <option value="{{ $disability->id }}">{{ $disability->name }}</option>
+@section('input_family_member_id')
+  <select class="form-control search-resident" name="family_member_id[]">
+    @foreach(App\Resident::all() as $resident)
+      <option value="{{ $resident->id }}">{{ $resident->name }}</option>
     @endforeach
   </select>
 @endsection
 
 @section('submit_message')
-    Tambah KK
+    Tambah Kartu Keluarga
 @endsection

@@ -42,6 +42,16 @@ $factory->define(App\Resident::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\FamilyCard::class, function (Faker\Generator $faker) {
+    return [
+        'number' => $faker->numberBetween(3310042305070000, 3310042305080000),
+        'village_id' => App\Village::all()->random()->id,
+        'dukuh' => App\Setting::getDukuh()->random(),
+        'rt' => App\Setting::getRT()->random(),
+        'rw' => App\Setting::getRW()->random(),
+    ];
+});
+
 $factory->define(App\Province::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->sentence(2),

@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\FamilyCardRequest;
 use App\FamilyCard;
+use App\Http\Requests\FamilyCardRequest;
+use App\Setting;
+use App\Services\FamilyCardService;
+use Carbon\Carbon;
 use Datatables;
 
 class FamilyCardsController extends Controller
 {
     /**
+     * @var \App\Services\FamilyCardService
+     */
+    protected $familyCardService;
+
+    /**
      * Constructor.
      *
+     * @param  \App\Services\FamilyCardService  $familyCardService
      * @return void
      */
-    public function __construct()
+    public function __construct(FamilyCardService $familyCardService)
     {
-        //
+        $this->familyCardService = $familyCardService;
     }
 
     /**
@@ -28,6 +37,23 @@ class FamilyCardsController extends Controller
         $this->authorize('family_cards.manage');
 
         return view('family_cards.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $dukuh
+     * @return \Illuminate\Http\Response
+     */
+    public function showDukuh($dukuh)
+    {
+        $this->authorize('family_cards.manage');
+
+        if (! Setting::getDukuh()->contains(ucwords($dukuh))) {
+            return abort(404);
+        }
+
+        return view('family_cards.show_dukuh', compact('dukuh'));
     }
 
     /**
@@ -52,7 +78,14 @@ class FamilyCardsController extends Controller
     {
         $this->authorize('family_cards.manage');
 
+        $request->merge([
+            'issued_on' => Carbon::parse($request->issued_on)->startOfDay(),
+        ]);
+
         $familyCard = FamilyCard::create($request->all());
+        $data = collect($request->all());
+        $this->familyCardService->syncPatriarch($data, $familyCard);
+        $this->familyCardService->syncMembers($data, $familyCard);
 
         alert()->success(trans('message.ctrl.family_cards.store'))->persistent("Close");
 
@@ -96,6 +129,15 @@ class FamilyCardsController extends Controller
     {
         $this->authorize('family_cards.manage');
 
+        $request->merge([
+            'issued_on' => Carbon::parse($request->issued_on)->startOfDay(),
+        ]);
+
+        $familyCard->update($request->all());
+        $data = collect($request->all());
+        $this->familyCardService->syncPatriarch($data, $familyCard);
+        $this->familyCardService->syncMembers($data, $familyCard);
+
         alert()->success(trans('message.ctrl.family_cards.update'))->persistent("Close");
 
         return back();
@@ -111,6 +153,8 @@ class FamilyCardsController extends Controller
     {
         $this->authorize('family_cards.manage');
 
+        $this->familyCardService->detachPatriarch($familyCard);
+        $this->familyCardService->detachMembers($familyCard);
         $familyCard->delete();
 
         alert()->success(trans('message.ctrl.family_cards.destroy'))->persistent("Close");
@@ -125,11 +169,40 @@ class FamilyCardsController extends Controller
      */
     public function getFamilyCards()
     {
-        return Datatables::of(FamilyCard::all())
+        return Datatables::of(FamilyCard::with(
+                'village',
+                'members'
+            )->get())
             ->addColumn('action', function ($family_card) {
-                $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
-                $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
-                $action .= '<a href="'. route('family_cards.destroy', $family_card) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i> Hapus</a>';
+                $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i></a>';
+                $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i></a>';
+                $action .= '<a href="'. route('family_cards.destroy', $family_card) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i></a>';
+                return $action;
+            })
+            ->make(true);
+    }
+
+    /**
+     * Get all family card for specific dukuh by ajax request.
+     *
+     * @param  string  $dukuh
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getByDukuh($dukuh)
+    {
+        if (! Setting::getDukuh()->contains(ucwords($dukuh))) {
+            return abort(404);
+        }
+
+        return Datatables::of(FamilyCard::where('dukuh', $dukuh)
+            ->with(
+                'village',
+                'members'
+            )->get())
+            ->addColumn('action', function ($family_card) {
+                $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i></a>';
+                $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i></a>';
+                $action .= '<a href="'. route('family_cards.destroy', $family_card) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i></a>';
                 return $action;
             })
             ->make(true);

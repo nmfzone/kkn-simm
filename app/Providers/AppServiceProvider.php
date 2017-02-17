@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerRoles();
+        $this->bootViewComposers();
         $this->registerEloquentObservers();
         $this->registerCustomValidations();
     }
@@ -35,6 +36,25 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             Services\UserService::class,
             Services\Implementations\UserServiceImplementation::class
+        );
+        $this->app->bind(
+            Services\FamilyCardService::class,
+            Services\Implementations\FamilyCardServiceImplementation::class
+        );
+    }
+
+    /**
+     * Bootstrap view composers.
+     *
+     * @return void
+     */
+    protected function bootViewComposers()
+    {
+        view()->composer(
+            'settings.create', \App\Http\ViewComposers\SettingsComposer::class
+        );
+        view()->composer(
+            'settings.edit', \App\Http\ViewComposers\SettingsComposer::class
         );
     }
 

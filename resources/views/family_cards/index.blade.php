@@ -24,10 +24,13 @@
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Username</th>
-                  <th>Nama</th>
-                  <th>Photo</th>
-                  <th>Aksi</th>
+                  <th>No KK</th>
+                  <th>Dukuh</th>
+                  <th>RT</th>
+                  <th>RW</th>
+                  <th>Desa</th>
+                  <th>Kepala Keluarga</th>
+                  <th width="70px">Aksi</th>
                 </tr>
               </thead>
             </table>
@@ -50,13 +53,12 @@
         ajax: '{!! route('family_cards.getFamilyCards') !!}',
         columns: [
           { data: 'id', name: 'id' },
-          { data: 'username', name: 'username' },
-          { data: 'name', name: 'name' },
-          { data: 'photo_url', name: 'photo_url', defaultContent: '-',
-            render: function ( data, type, full, meta ) {
-              return `<img src="${data}" width="40" />`;
-            }
-          },
+          { data: 'number', name: 'number' },
+          { data: 'dukuh', name: 'dukuh' },
+          { data: 'rt', name: 'rt' },
+          { data: 'rw', name: 'rw' },
+          { data: 'village.name', name: 'village.name' },
+          { data: 'patriarch.name', name: 'patriarch.name' },
           { data: 'action', name: 'action', orderable: false, searchable: false, width: '250px' }
         ]
       });

@@ -61,6 +61,12 @@ class UsersController extends Controller
 
         $user = User::create($request->all());
 
+        if ($user->position == 'Administrator') {
+            $user->assign('Administrator');
+        } else {
+            $user->assign('RW');
+        }
+
         if ($request->hasFile('photo')) {
             $this->userService->storeMedia($request->photo, $user);
         }
@@ -106,6 +112,25 @@ class UsersController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $this->authorize('update', $user);
+
+        if (! is_null($request->current_password)) {
+            $this->validate($request, [
+                'current_password' => 'old_password:' . $user->password,
+                'password' => 'required_with:current_password|confirmed|min:6',
+            ]);
+        }
+
+        $user->update($request->all());
+
+        if ($user->position == 'Administrator') {
+            $user->assign('Administrator');
+        } else {
+            $user->assign('RW');
+        }
+
+        if ($request->hasFile('photo')) {
+            $this->userService->storeMedia($request->photo, $user);
+        }
 
         alert()->success(trans('message.ctrl.users.update'))->persistent("Close");
 
@@ -156,8 +181,7 @@ class UsersController extends Controller
     {
         return Datatables::of(User::all())
             ->addColumn('action', function ($user) {
-                $action = '<a href="'. route('users.show', $user) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
-                $action .= '<a href="'. route('users.edit', $user) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
+                $action = '<a href="'. route('users.edit', $user) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
                 $action .= '<a href="'. route('users.banned', $user) .'" class="btn btn-xs btn-warning banned-this m-l-10"><i class="fa fa-warning"></i> Banned</a>';
                 $action .= '<a href="'. route('users.destroy', $user) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i> Hapus</a>';
                 return $action;

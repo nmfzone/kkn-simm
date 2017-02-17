@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_banned')->default(false);
             $table->string('photo_url')->nullable();
             $table->timestamp('last_login')->nullable();
+            $table->string('position');
             $table->rememberToken();
             $table->timestamps();
         });

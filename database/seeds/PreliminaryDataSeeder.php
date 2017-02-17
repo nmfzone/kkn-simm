@@ -18,6 +18,14 @@ class PreliminaryDataSeeder extends Seeder
             'name' => 'Administrator',
             'username' => 'admin',
             'password' => '12345678',
+            'position' => 'Administrator',
         ])->assign("Administrator");
+
+        factory(User::class)->create([
+            'name' => 'Waluyo',
+            'username' => 'Waluyo',
+            'password' => '12345678',
+            'position' => 'Ketua RW 04',
+        ])->assign("RW");
     }
 }

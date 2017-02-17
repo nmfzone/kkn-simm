@@ -90,13 +90,27 @@
     </div>
 </div>
 
+<div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
+    <label class="col-md-4 control-label">Posisi</label>
+
+    <div class="col-md-6">
+        @yield('input_position')
+
+        @if ($errors->has('position'))
+            <span class="help-block">
+                <strong>{{ $errors->first('position') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
 {!! csrf_field() !!}
 
 @yield('optional')
 
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
-        <a href="{{ URL::previous() }}" class="btn btn-default">Back</a>
+        <a href="{{ URL::previous() }}" class="btn btn-default">{{ trans('message.back') }}</a>
         <button type="submit" class="btn btn-primary">
             <i class="fa fa-btn fa-user"></i> @yield('submit_message')
         </button>

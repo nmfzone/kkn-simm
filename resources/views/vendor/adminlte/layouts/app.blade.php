@@ -13,14 +13,14 @@
       @include('adminlte::layouts.partials.sidebar')
 
       <div class="content-wrapper">
-        @include('adminlte::layouts.partials.contentheader')
+        @if(! Route::is('dashboard.index'))
+          @include('adminlte::layouts.partials.contentheader')
+        @endif
 
         <section class="content">
           @yield('main-content')
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-
-      @include('adminlte::layouts.partials.controlsidebar')
 
       @include('adminlte::layouts.partials.footer')
     </div><!-- ./wrapper -->

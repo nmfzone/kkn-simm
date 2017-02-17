@@ -50,4 +50,5 @@ window.axios.defaults.headers.common = {
 // });
 
 require('sweetalert');
+require('./plugins/datejs/date');
 require('./custom');

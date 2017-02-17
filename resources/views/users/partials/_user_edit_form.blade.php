@@ -1,22 +1,24 @@
 @extends('users._user_form')
 
 @section('input_username')
-    <input type="text" class="form-control" name="username" value="{{ $user->username }}">
+  <input type="text" class="form-control" name="username" value="{{ old('username', $user->username) }}">
 @endsection
 
 @section('input_name')
-    <input type="text" class="form-control" name="name" value="{{ $user->name }}">
+  <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}">
 @endsection
 
-{{-- @section('input_position')
-    @foreach($positions as $position)
-        @if ($position['name'] == $user->position)
-            <option value="{{ $position['name'] }}" selected>{{ $position['name'] }}</option>
-        @else
-            <option value="{{ $position['name'] }}">{{ $position['name'] }}</option>
+@section('input_position')
+  <select class="form-control" name="position">
+    @foreach(App\Setting::getPosition() as $position)
+      <option value="{{ $position[0] }}"
+        @if($position[0] === $user->position)
+          selected
         @endif
+      >{{ $position[0] }}</option>
     @endforeach
-@endsection --}}
+  </select>
+@endsection
 
 @section('submit_message')
     Edit Anggota

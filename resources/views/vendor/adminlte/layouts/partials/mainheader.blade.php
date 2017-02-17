@@ -1,5 +1,5 @@
 <header class="main-header">
-  <a href="{{ url('/home') }}" class="logo">
+  <a href="{{ route('dashboard.index') }}" class="logo">
     <span class="logo-mini"><b>G</b></span>
     <span class="logo-lg"><b>Gunung Gajah</b></span>
   </a>
@@ -31,7 +31,7 @@
 
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
+                  <a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
@@ -49,10 +49,6 @@
             </ul>
           </li>
         @endif
-
-        <li>
-          <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-        </li>
       </ul>
     </div>
   </nav>

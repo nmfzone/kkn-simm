@@ -60,14 +60,16 @@ class User extends Authenticatable
     }
 
     /**
-     * Always set and hash the password attribute.
+     * Always set and hash the password attribute if not empty.
      *
      * @param  string  $value
      * @return void
      */
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        if (! empty($value)) {
+            $this->attributes['password'] = bcrypt($value);
+        }
     }
 
     /**
