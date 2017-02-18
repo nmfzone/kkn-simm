@@ -2,7 +2,7 @@
 
 @section('input_name')
   <div class="nude-input">
-    {{ $resident->maritalStatus->name }}
+    {{ $resident->name }}
   </div>
 @endsection
 

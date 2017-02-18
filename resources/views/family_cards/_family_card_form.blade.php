@@ -37,15 +37,15 @@
   </div>
 </div>
 
-<div class="form-group{{ $errors->has('dukuh') ? ' has-error' : '' }}">
-  <label class="col-md-4 control-label">Pedukuhan</label>
+<div class="form-group{{ $errors->has('kadus') ? ' has-error' : '' }}">
+  <label class="col-md-4 control-label">Kadus</label>
 
   <div class="col-md-6">
-    @yield('input_dukuh')
+    @yield('input_kadus')
 
-    @if ($errors->has('dukuh'))
+    @if ($errors->has('kadus'))
       <span class="help-block">
-        <strong>{{ $errors->first('dukuh') }}</strong>
+        <strong>{{ $errors->first('kadus') }}</strong>
       </span>
     @endif
   </div>

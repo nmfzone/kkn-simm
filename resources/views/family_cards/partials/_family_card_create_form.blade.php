@@ -12,10 +12,10 @@
   </select>
 @endsection
 
-@section('input_dukuh')
-  <select class="form-control" name="dukuh">
-    @foreach(App\Setting::getDukuh()->all() as $dukuh)
-      <option value="{{ $dukuh }}">{{ $dukuh }}</option>
+@section('input_kadus')
+  <select class="form-control" name="kadus">
+    @foreach(App\Setting::getKadusByPosition(auth()->user()->position)->all() as $kadus)
+      <option value="{{ $kadus }}">{{ $kadus }}</option>
     @endforeach
   </select>
 @endsection

@@ -42,18 +42,18 @@ class FamilyCardsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $dukuh
+     * @param  string  $kadus
      * @return \Illuminate\Http\Response
      */
-    public function showDukuh($dukuh)
+    public function showKadus($kadus)
     {
         $this->authorize('family_cards.manage');
 
-        if (! Setting::getDukuh()->contains(ucwords($dukuh))) {
+        if (! Setting::getKadus()->contains(ucwords($kadus))) {
             return abort(404);
         }
 
-        return view('family_cards.show_dukuh', compact('dukuh'));
+        return view('family_cards.show_kadus', compact('kadus'));
     }
 
     /**
@@ -102,6 +102,8 @@ class FamilyCardsController extends Controller
     {
         $this->authorize('family_cards.manage');
 
+        $this->checkRWAbility($familyCard);
+
         return view('family_cards.show', compact('familyCard'));
     }
 
@@ -114,6 +116,8 @@ class FamilyCardsController extends Controller
     public function edit(FamilyCard $familyCard)
     {
         $this->authorize('family_cards.manage');
+
+        $this->checkRWAbility($familyCard);
 
         return view('family_cards.edit', compact('familyCard'));
     }
@@ -128,6 +132,8 @@ class FamilyCardsController extends Controller
     public function update(FamilyCardRequest $request, FamilyCard $familyCard)
     {
         $this->authorize('family_cards.manage');
+
+        $this->checkRWAbility($familyCard);
 
         $request->merge([
             'issued_on' => Carbon::parse($request->issued_on)->startOfDay(),
@@ -153,11 +159,37 @@ class FamilyCardsController extends Controller
     {
         $this->authorize('family_cards.manage');
 
+        $this->checkRWAbility($familyCard);
+
         $this->familyCardService->detachPatriarch($familyCard);
         $this->familyCardService->detachMembers($familyCard);
         $familyCard->delete();
 
         alert()->success(trans('message.ctrl.family_cards.destroy'))->persistent("Close");
+
+        return redirect(route('family_cards.index'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\FamilyCard  $familyCard
+     * @param  \App\Resident  $resident
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyMember(FamilyCard $familyCard, Resident $resident)
+    {
+        $this->authorize('family_cards.manage');
+
+        $this->checkRWAbility($familyCard);
+
+        if (! $familyCard->members()->find($resident)) {
+            return abort(404);
+        }
+
+        $familyCard->members()->detach([$resident->id]);
+
+        alert()->success(trans('message.ctrl.family_cards.destroy_member'))->persistent("Close");
 
         return redirect(route('family_cards.index'));
     }
@@ -169,10 +201,15 @@ class FamilyCardsController extends Controller
      */
     public function getFamilyCards()
     {
-        return Datatables::of(FamilyCard::with(
-                'village',
-                'members'
-            )->get())
+        $familyCards = FamilyCard::with('village', 'members');
+
+        if (auth()->user()->isAn('Administrator')) {
+            $familyCards = $familyCards->get();
+        } else {
+            $familyCards = $familyCards->RW(explode(' ', auth()->user()->position)[2])->get();
+        }
+
+        return Datatables::of($familyCards)
             ->addColumn('action', function ($family_card) {
                 $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i></a>';
                 $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i></a>';
@@ -183,26 +220,31 @@ class FamilyCardsController extends Controller
     }
 
     /**
-     * Get all family card for specific dukuh by ajax request.
+     * Get all family card for specific kadus by ajax request.
      *
-     * @param  string  $dukuh
+     * @param  string  $kadus
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getByDukuh($dukuh)
+    public function getByKadus($kadus)
     {
-        if (! Setting::getDukuh()->contains(ucwords($dukuh))) {
+        if (! Setting::getKadus()->contains(ucwords($kadus))) {
             return abort(404);
         }
 
-        return Datatables::of(FamilyCard::where('dukuh', $dukuh)
+        return Datatables::of(FamilyCard::where('kadus', $kadus)
             ->with(
                 'village',
                 'members'
             )->get())
             ->addColumn('action', function ($family_card) {
-                $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i></a>';
-                $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i></a>';
-                $action .= '<a href="'. route('family_cards.destroy', $family_card) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i></a>';
+                if (auth()->user()->isNotAn('Administrator') && $family_card->rw != explode(' ', auth()->user()->position)[2]) {
+                    $action = '-';
+                } else {
+                    $action = '<a href="'. route('family_cards.show', $family_card) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i></a>';
+                    $action .= '<a href="'. route('family_cards.edit', $family_card) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i></a>';
+                    $action .= '<a href="'. route('family_cards.destroy', $family_card) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i></a>';
+                }
+
                 return $action;
             })
             ->make(true);

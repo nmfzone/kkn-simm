@@ -21,7 +21,7 @@
               <span class="info-box-number">
                 {{ Auth::user()->isAn('Administrator')
                   ? App\FamilyCard::count()
-                  : App\FamilyCard::dukuh(explode(' ', Auth::user()->position)[0])->count() }}
+                  : App\FamilyCard::RW(explode(' ', auth()->user()->position)[2])->count() }}
               </span>
             </div><!-- /.info-box-content -->
           </div><!-- /.info-box -->
@@ -36,7 +36,7 @@
               <span class="info-box-number">
                 {{ Auth::user()->isAn('Administrator')
                   ? App\Resident::count()
-                  : App\Resident::dukuh(explode(' ', Auth::user()->position)[0])->count() }}
+                  : App\Resident::RW(explode(' ', auth()->user()->position)[2])->count() }}
               </span>
             </div><!-- /.info-box-content -->
           </div><!-- /.info-box -->
@@ -51,7 +51,7 @@
               <span class="info-box-number">
                 {{ Auth::user()->isAn('Administrator')
                   ? App\Resident::men()->count()
-                  : App\Resident::dukuh(explode(' ', Auth::user()->position)[0])->men()->count() }}
+                  : App\Resident::RW(explode(' ', auth()->user()->position)[2])->men()->count() }}
               </span>
             </div><!-- /.info-box-content -->
           </div><!-- /.info-box -->
@@ -66,7 +66,7 @@
               <span class="info-box-number">
                 {{ Auth::user()->isAn('Administrator')
                   ? App\Resident::women()->count()
-                  : App\Resident::dukuh(explode(' ', Auth::user()->position)[0])->women()->count() }}
+                  : App\Resident::RW(explode(' ', auth()->user()->position)[2])->women()->count() }}
               </span>
             </div><!-- /.info-box-content -->
           </div><!-- /.info-box -->
@@ -75,7 +75,7 @@
     </div><!-- /.row -->
 
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="box box-danger">
           <div class="box-header with-border">
             <h3 class="box-title">Grafik Penduduk</h3>
@@ -85,25 +85,27 @@
           </div><!-- /.box-body -->
         </div><!-- /.box -->
       </div><!-- /.col -->
-
-      <div class="col-md-4">
-        @php($colors = ['bg-aqua', 'bg-purple', 'bg-green'])
-        @foreach (App\Setting::getDukuh() as $index => $value)
-          <div class="small-box{{ ' ' . $colors[$index] }}">
-            <div class="inner">
-              <h3>{{ App\Resident::dukuh($value)->count() }}</h3>
-              <p>{{ $value }}</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-users"></i>
-            </div>
-            <a href="{{ route('family_cards.showDukuh', $value) }}" class="small-box-footer">
-              More info <i class="fa fa-arrow-circle-right"></i>
-            </a>
-          </div>
-        @endforeach
-      </div><!-- /.col -->
     </div><!-- /.row -->
+
+    <div class="row">
+        @php($colors = ['bg-aqua', 'bg-purple', 'bg-green'])
+        @foreach (App\Setting::getKadus() as $index => $value)
+          <div class="col-md-4">
+            <div class="small-box{{ ' ' . $colors[$index] }}">
+              <div class="inner">
+                <h3>{{ App\Resident::kadus($value)->count() }}</h3>
+                <p>{{ $value }}</p>
+              </div>
+              <div class="icon">
+                <i class="fa fa-users"></i>
+              </div>
+              <a href="{{ route('family_cards.showKadus', $value) }}" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div><!-- /.col -->
+        @endforeach
+    </div>
 
     @if(Auth::user()->isAn('Administrator'))
       <div class="row">
@@ -257,13 +259,13 @@
       resize: true,
       colors: ["#f39c12", "#00a65a", "#dd4b39"],
       data: [
-        @foreach (App\Setting::getPartition(Auth::user()->position)->all() as $partition)
+        @foreach (App\Setting::getPartition(auth()->user()->position)->all() as $partition)
           {!! '{label: "' . $partition[0] . '", value: ' . $partition[1]->count() . '},' !!}
         @endforeach
       ],
       hideHover: 'auto'
     }).on('click', function(i, row) {
-      @foreach (App\Setting::getPartition(Auth::user()->position)->all() as $index => $partition)
+      @foreach (App\Setting::getPartition(auth()->user()->position)->all() as $index => $partition)
         {!! 'if (i == ' . $index . ') {' .
           'window.location = "' . route('residents.show_partition', $index+1) . '";' .
         '}' !!}

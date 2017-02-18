@@ -115,6 +115,8 @@ class ResidentsController extends Controller
     {
         $this->authorize('residents.manage');
 
+        $this->checkRWAbility($resident);
+
         return view('residents.show', compact('resident'));
     }
 
@@ -127,6 +129,8 @@ class ResidentsController extends Controller
     public function edit(Resident $resident)
     {
         $this->authorize('residents.manage');
+
+        $this->checkRWAbility($resident);
 
         return view('residents.edit', compact('resident'));
     }
@@ -141,6 +145,8 @@ class ResidentsController extends Controller
     public function update(ResidentRequest $request, Resident $resident)
     {
         $this->authorize('residents.manage');
+
+        $this->checkRWAbility($resident);
 
         $request->merge([
             'date_of_birth' => Carbon::parse($request->date_of_birth)->startOfDay(),
@@ -163,6 +169,8 @@ class ResidentsController extends Controller
     public function destroy(Resident $resident)
     {
         $this->authorize('residents.manage');
+
+        $this->checkRWAbility($resident);
 
         $resident->delete();
 
@@ -275,7 +283,7 @@ class ResidentsController extends Controller
      */
     public function getPartitionData($partition)
     {
-        return Datatables::of(Setting::getPartition()->get($partition-1)[1])
+        return Datatables::of(Setting::getPartition(auth()->user()->position)->get($partition-1)[1])
             ->addColumn('action', function ($resident) {
                 $action = '<a href="'. route('residents.edit', $resident) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
                 $action .= '<a href="'. route('residents.destroy', $resident) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i> Hapus</a>';
@@ -291,13 +299,21 @@ class ResidentsController extends Controller
      */
     public function getResidents()
     {
-        return Datatables::of(Resident::with(
-                'hometown',
-                'education',
-                'job',
-                'maritalStatus',
-                'disabilities'
-            )->get())
+        $residents = Resident::with(
+            'hometown',
+            'education',
+            'job',
+            'maritalStatus',
+            'disabilities'
+        );
+
+        if (auth()->user()->isAn('Administrator')) {
+            $residents = $residents->get();
+        } else {
+            $residents = $residents->RW(explode(' ', auth()->user()->position)[2])->get();
+        }
+
+        return Datatables::of($residents)
             ->addColumn('action', function ($resident) {
                 $action = '<a href="'. route('residents.show', $resident) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
                 $action .= '<a href="'. route('residents.edit', $resident) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
@@ -314,13 +330,21 @@ class ResidentsController extends Controller
      */
     public function getMenResidents()
     {
-        return Datatables::of(Resident::men()->with(
-                'hometown',
-                'education',
-                'job',
-                'maritalStatus',
-                'disabilities'
-            )->get())
+        $mens = Resident::men()->with(
+            'hometown',
+            'education',
+            'job',
+            'maritalStatus',
+            'disabilities'
+        );
+
+        if (auth()->user()->isAn('Administrator')) {
+            $mens = $mens->get();
+        } else {
+            $mens = $mens->RW(explode(' ', auth()->user()->position)[2])->get();
+        }
+
+        return Datatables::of($mens)
             ->addColumn('action', function ($resident) {
                 $action = '<a href="'. route('residents.show', $resident) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
                 $action .= '<a href="'. route('residents.edit', $resident) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
@@ -337,13 +361,21 @@ class ResidentsController extends Controller
      */
     public function getWomenResidents()
     {
-        return Datatables::of(Resident::women()->with(
-                'hometown',
-                'education',
-                'job',
-                'maritalStatus',
-                'disabilities'
-            )->get())
+        $womens = Resident::women()->with(
+            'hometown',
+            'education',
+            'job',
+            'maritalStatus',
+            'disabilities'
+        );
+
+        if (auth()->user()->isAn('Administrator')) {
+            $womens = $womens->get();
+        } else {
+            $womens = $womens->RW(explode(' ', auth()->user()->position)[2])->get();
+        }
+
+        return Datatables::of($womens)
             ->addColumn('action', function ($resident) {
                 $action = '<a href="'. route('residents.show', $resident) .'" class="btn btn-xs btn-success show-this"><i class="fa fa-search-plus"></i> Lihat</a>';
                 $action .= '<a href="'. route('residents.edit', $resident) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';

@@ -25,7 +25,7 @@
                 <tr>
                   <th>Id</th>
                   <th>No KK</th>
-                  <th>Dukuh</th>
+                  <th>Kadus</th>
                   <th>RT</th>
                   <th>RW</th>
                   <th>Desa</th>
@@ -50,11 +50,11 @@
       $('#family-cards-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('family_cards.getByDukuh', $dukuh) !!}',
+        ajax: '{!! route('family_cards.getByKadus', $kadus) !!}',
         columns: [
           { data: 'id', name: 'id' },
           { data: 'number', name: 'number' },
-          { data: 'dukuh', name: 'dukuh' },
+          { data: 'kadus', name: 'kadus' },
           { data: 'rt', name: 'rt' },
           { data: 'rw', name: 'rw' },
           { data: 'village.name', name: 'village.name' },

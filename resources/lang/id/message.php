@@ -54,6 +54,7 @@ return [
             'store' => 'Kartu Keluarga berhasil ditambahkan.',
             'update' => 'Kartu Keluarga berhasil diperbarui.',
             'destroy' => 'Kartu Keluarga berhasil di hapus.',
+            'destroy_member' => 'Anggota keluarga berhasil di hapus.',
         ],
         'residents' => [
             'store' => 'Penduduk berhasil ditambahkan.',

@@ -12,7 +12,7 @@ class FamilyCard extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'dukuh', 'rt', 'rw', 'issued_on', 'village_id',
+        'number', 'kadus', 'rt', 'rw', 'issued_on', 'village_id',
     ];
 
     /**
@@ -36,13 +36,13 @@ class FamilyCard extends Model
     ];
 
     /**
-     * Scope a query to only include family cards in dukuh.
+     * Scope a query to only include family cards in kadus.
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeDukuh($query, $dukuh)
+    public function scopeKadus($query, $kadus)
     {
-        return $query->where('dukuh', $dukuh);
+        return $query->where('kadus', $kadus);
     }
 
     /**

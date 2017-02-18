@@ -41,7 +41,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -102,7 +102,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -163,7 +163,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -225,7 +225,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -302,7 +302,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -395,7 +395,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 
@@ -476,7 +476,7 @@
                   </div>
                 </div>
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-info">Submit</button>
+                  <button type="submit" class="btn btn-info">Tambah</button>
                 </div>
               </form>
 

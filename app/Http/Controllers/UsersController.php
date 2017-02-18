@@ -123,8 +123,10 @@ class UsersController extends Controller
         $user->update($request->all());
 
         if ($user->position == 'Administrator') {
+            $user->retract('Administrator');
             $user->assign('Administrator');
         } else {
+            $user->retract('RW');
             $user->assign('RW');
         }
 

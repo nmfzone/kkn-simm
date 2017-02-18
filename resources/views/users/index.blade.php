@@ -26,6 +26,7 @@
                   <th>Id</th>
                   <th>Username</th>
                   <th>Nama</th>
+                  <th>Jabatan</th>
                   <th>Photo</th>
                   <th>Aksi</th>
                 </tr>
@@ -52,6 +53,7 @@
           { data: 'id', name: 'id' },
           { data: 'username', name: 'username' },
           { data: 'name', name: 'name' },
+          { data: 'position', name: 'position' },
           { data: 'photo_url', name: 'photo_url', defaultContent: '-',
             render: function ( data, type, full, meta ) {
               return `<img src="${data}" height="50" />`;

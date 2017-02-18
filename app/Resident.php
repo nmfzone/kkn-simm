@@ -119,14 +119,14 @@ class Resident extends Model
     }
 
     /**
-     * Scope a query to only include resident in dukuh.
+     * Scope a query to only include resident in kadus.
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeDukuh($query, $dukuh)
+    public function scopeKadus($query, $kadus)
     {
-        return $query->whereHas('familyCards', function ($query) use ($dukuh) {
-            $query->where('dukuh', $dukuh);
+        return $query->whereHas('familyCards', function ($query) use ($kadus) {
+            $query->where('kadus', $kadus);
         }, '>', 0);
     }
 
@@ -151,7 +151,7 @@ class Resident extends Model
     {
         return $query->whereHas('familyCards', function ($query) use ($rw) {
             $query->where('rw', $rw);
-        }, '>', 0);
+        }, '>', 0)->orHas('familyCards', null, '=', 0);
     }
 
     /**
@@ -181,7 +181,7 @@ class Resident extends Model
      */
     public function familyCard()
     {
-        return $this->familyCards()->latest();
+        return $this->familyCards()->latest()->first();
     }
 
     /**

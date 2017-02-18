@@ -21,5 +21,5 @@
 @endsection
 
 @section('submit_message')
-    Edit Anggota
+    Simpan
 @endsection

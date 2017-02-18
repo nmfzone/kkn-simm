@@ -23,8 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/users/{user}/banned', 'UsersController@banned')->name('users.banned');
         Route::resource('/users', 'UsersController');
 
-        Route::get('/family-cards/dukuh/{dukuh}', 'FamilyCardsController@showDukuh')->name('family_cards.showDukuh');
-        Route::get('/family-cards/dukuh/get-data/{dukuh}', 'FamilyCardsController@getByDukuh')->name('family_cards.getByDukuh');
+        Route::get('/family-cards/kadus/{kadus}', 'FamilyCardsController@showKadus')->name('family_cards.showKadus');
+        Route::get('/family-cards/kadus/get-data/{kadus}', 'FamilyCardsController@getByKadus')->name('family_cards.getByKadus');
         Route::get('/family-cards/get-family-cards', 'FamilyCardsController@getFamilyCards')->name('family_cards.getFamilyCards');
         Route::resource('/family-cards', 'FamilyCardsController', [
             'names' => resourceNames('family_cards'),

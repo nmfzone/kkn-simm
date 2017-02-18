@@ -16,6 +16,7 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
+        FlowException::class,
         \Symfony\Component\HttpKernel\Exception\HttpException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
@@ -56,6 +57,15 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        switch (true) {
+            case $exception instanceof AuthorizationException:
+                return response('This action is unauthorized.', 403);
+            case $exception instanceof ModelNotFoundException:
+                return response('The data with the given key not found in our database.', 404);
+            case $exception instanceof FlowException:
+                return $exception->getResponse();
+        }
+
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }

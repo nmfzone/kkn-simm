@@ -16,7 +16,7 @@ class CreateFamilyCardsTable extends Migration
         Schema::create('family_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('number');
-            $table->string('dukuh');
+            $table->string('kadus');
             $table->string('rt');
             $table->string('rw');
             $table->bigInteger('village_id')->unsigned();

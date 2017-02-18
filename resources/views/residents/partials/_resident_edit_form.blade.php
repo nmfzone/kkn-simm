@@ -85,5 +85,5 @@
 @endsection
 
 @section('submit_message')
-  Edit Penduduk
+  Simpan
 @endsection

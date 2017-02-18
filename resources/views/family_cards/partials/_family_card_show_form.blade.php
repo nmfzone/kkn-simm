@@ -12,9 +12,9 @@
   </div>
 @endsection
 
-@section('input_dukuh')
+@section('input_kadus')
   <div class="nude-input">
-    {{ $familyCard->dukuh }}
+    {{ $familyCard->kadus }}
   </div>
 @endsection
 

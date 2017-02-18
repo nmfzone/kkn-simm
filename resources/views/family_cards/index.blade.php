@@ -25,7 +25,7 @@
                 <tr>
                   <th>Id</th>
                   <th>No KK</th>
-                  <th>Dukuh</th>
+                  <th>Kadus</th>
                   <th>RT</th>
                   <th>RW</th>
                   <th>Desa</th>
@@ -54,7 +54,7 @@
         columns: [
           { data: 'id', name: 'id' },
           { data: 'number', name: 'number' },
-          { data: 'dukuh', name: 'dukuh' },
+          { data: 'kadus', name: 'kadus' },
           { data: 'rt', name: 'rt' },
           { data: 'rw', name: 'rw' },
           { data: 'village.name', name: 'village.name' },

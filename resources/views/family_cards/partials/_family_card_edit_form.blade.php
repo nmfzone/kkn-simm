@@ -16,14 +16,14 @@
   </select>
 @endsection
 
-@section('input_dukuh')
-  <select class="form-control" name="dukuh">
-    @foreach(App\Setting::getDukuh()->all() as $dukuh)
-      <option value="{{ $dukuh }}"
-        @if($dukuh == $familyCard->dukuh)
+@section('input_kadus')
+  <select class="form-control" name="kadus">
+    @foreach(App\Setting::getKadusByPosition(auth()->user()->position)->all() as $kadus)
+      <option value="{{ $kadus }}"
+        @if($kadus == $familyCard->kadus)
           selected
         @endif
-      >{{ $dukuh }}</option>
+      >{{ $kadus }}</option>
     @endforeach
   </select>
 @endsection
@@ -94,5 +94,5 @@
 @endsection
 
 @section('submit_message')
-  Edit Kartu Keluarga
+  Simpan
 @endsection

@@ -30,9 +30,9 @@ class FamilyCardRequest extends FormRequest
         $rules = collect([
             'number' => 'required|digits_between:1,20|unique:family_cards',
             'village_id' => 'required|exists:villages,id',
-            'dukuh' => [
+            'kadus' => [
                 'required',
-                Rule::in(Setting::getDukuh()->all()),
+                Rule::in(Setting::getKadus()->all()),
             ],
             'rt' => [
                 'required',
@@ -44,7 +44,7 @@ class FamilyCardRequest extends FormRequest
             ],
             'patriarch' => 'required|exists:residents,id',
             'family_member' => 'required|boolean',
-            'family_member_id.*' => 'not_in:'. $this->request->get('patriarch') .'|exists:residents,id',
+            'family_member_id.*' => 'exists:residents,id',
         ]);
 
         switch ($this->method()) {
@@ -80,6 +80,11 @@ class FamilyCardRequest extends FormRequest
         $validator = parent::getValidatorInstance();
 
         $validator->sometimes('family_member_id.*', 'distinct', function($input)
+        {
+            return $input->family_member == 1;
+        });
+
+        $validator->sometimes('family_member_id.*', 'not_in:'. $this->request->get('patriarch'), function($input)
         {
             return $input->family_member == 1;
         });

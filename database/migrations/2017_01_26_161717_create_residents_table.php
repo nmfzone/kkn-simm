@@ -18,7 +18,7 @@ class CreateResidentsTable extends Migration
             $table->string('name');
             $table->string('nik')->unique();
             $table->string('gender', 20);
-            $table->timestamp('date_of_birth');
+            $table->dateTime('date_of_birth');
             $table->bigInteger('hometown_id')->unsigned();
             $table->foreign('hometown_id')->references('id')->on('districts')->onDelete('cascade');
             $table->integer('marital_status_id')->unsigned();

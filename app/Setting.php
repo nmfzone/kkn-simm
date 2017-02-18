@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     /**
-     * Get the dukuh.
+     * Lists of the kadus.
      *
      * @return Collection
      */
-    public static function getDukuh()
+    public static function listsKadus()
     {
         return collect([
-            'Sidowayah',
-            'Padasan',
+            'Kadus 1',
+            'Kadus 2',
+            'Kadus 3',
         ]);
     }
 
@@ -42,37 +43,43 @@ class Setting extends Model
     /**
      * Get the partition.
      *
+     * @param  string  $position
      * @return Collection
      */
     public static function getPartition($position = null)
     {
-        if ($position == 'Administrator') {
-            $dukuh = null;
+        if (is_null($position) || $position == 'Administrator') {
+            $rw = null;
         } else {
-            $dukuh = explode(' ', $position)[0];
+            $rw = explode(' ', $position)[2];
         }
 
         $balita = Resident::balita()->with('hometown', 'job', 'education');
         $anak = Resident::anakAnak()->with('hometown', 'job', 'education');
         $remaja = Resident::remaja()->with('hometown', 'job', 'education');
         $produktif = Resident::produktif()->with('hometown', 'job', 'education');
+        $lansia = Resident::lansia()->with('hometown', 'job', 'education');
 
         return collect([
             [
                 'Balita',
-                is_null($dukuh) ? $balita->get() : $balita->dukuh($dukuh)->get(),
+                is_null($rw) ? $balita->get() : $balita->RW($rw)->get(),
             ],
             [
                 'Anak-Anak',
-                is_null($dukuh) ? $anak->get() : $anak->dukuh($dukuh)->get(),
+                is_null($rw) ? $anak->get() : $anak->RW($rw)->get(),
             ],
             [
                 'Remaja',
-                is_null($dukuh) ? $remaja->get() : $remaja->dukuh($dukuh)->get(),
+                is_null($rw) ? $remaja->get() : $remaja->RW($rw)->get(),
             ],
             [
                 'Produktif',
-                is_null($dukuh) ? $produktif->get() : $produktif->dukuh($dukuh)->get(),
+                is_null($rw) ? $produktif->get() : $produktif->RW($rw)->get(),
+            ],
+            [
+                'Lansia',
+                is_null($rw) ? $produktif->get() : $produktif->RW($rw)->get(),
             ],
         ]);
     }
@@ -109,27 +116,27 @@ class Setting extends Model
             ],
             [
                 'Ketua RW 01',
-                'Sidowayah',
+                'Kadus 1',
             ],
             [
                 'Ketua RW 02',
-                'Sidowayah',
+                'Kadus 1',
             ],
             [
                 'Ketua RW 03',
-                'Padasan',
+                'Kadus 2',
             ],
             [
                 'Ketua RW 04',
-                'Padasan',
+                'Kadus 2',
             ],
             [
                 'Ketua RW 05',
-                'Padasan',
+                'Kadus 3',
             ],
             [
                 'Ketua RW 06',
-                'Padasan',
+                'Kadus 3',
             ],
         ]);
     }
@@ -154,8 +161,41 @@ class Setting extends Model
     }
 
     /**
+     * Get the kadus by rw.
+     *
+     * @param  string  $rw
+     * @return string
+     */
+    public static function getKadus($rw = null)
+    {
+        if (is_null($rw)) return static::listsKadus();
+
+        return static::getPosition()->filter(function($value, $key) use ($rw) {
+            return str_contains($value[0], $rw);
+        })->pluck(1);
+    }
+
+    /**
+     * Get the kadus by rw.
+     *
+     * @param  string  $rw
+     * @return string
+     */
+    public static function getKadusByPosition($position)
+    {
+        if ($position === 'Administrator') {
+            return static::listsKadus();
+        }
+
+        return static::getKadus(explode(' ', $position)[2]);
+    }
+
+    /**
      * Build number.
      *
+     * @param  integer  $end
+     * @param  char  $char
+     * @param  integer  $start
      * @return array
      */
     private static function buildNumber($end, $char = '0', $start = 1)
