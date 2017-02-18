@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use App;
 use App\Observers;
 use App\Services;
@@ -20,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Fix Mysql Old Version Issue
+        Schema::defaultStringLength(191);
+
         $this->registerRoles();
         $this->bootViewComposers();
         $this->registerEloquentObservers();
