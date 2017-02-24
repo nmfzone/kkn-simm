@@ -10,7 +10,7 @@
           <div class="login-box">
               <div class="login-logo">
                 <a href="{{ url('/home') }}">
-                  <b>SIM</b><br />Gunung Gajah
+                  <b>SIM</b><br />GunungGajah
                 </a>
               </div><!-- /.login-logo -->
 

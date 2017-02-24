@@ -90,19 +90,21 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
-    <label class="col-md-4 control-label">Posisi</label>
+@if(auth()->user()->isAn('Administrator'))
+  <div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
+      <label class="col-md-4 control-label">Posisi</label>
 
-    <div class="col-md-6">
-        @yield('input_position')
+      <div class="col-md-6">
+          @yield('input_position')
 
-        @if ($errors->has('position'))
-            <span class="help-block">
-                <strong>{{ $errors->first('position') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
+          @if ($errors->has('position'))
+              <span class="help-block">
+                  <strong>{{ $errors->first('position') }}</strong>
+              </span>
+          @endif
+      </div>
+  </div>
+@endif
 
 {!! csrf_field() !!}
 

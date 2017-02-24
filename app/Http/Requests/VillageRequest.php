@@ -46,7 +46,7 @@ class VillageRequest extends FormRequest
                     'village_name' => [
                         'required',
                         'max:255',
-                        Rule::unique('villages')->where(function ($query) use ($village) {
+                        Rule::unique('villages', 'name')->where(function ($query) use ($village) {
                             $query->where('sub_district_id', $village->sub_district_id);
                         })->ignore($village->id),
                     ],

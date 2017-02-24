@@ -9,6 +9,14 @@ use Illuminate\Support\Collection;
 interface FamilyCardService
 {
     /**
+     * Manage the alteration of the family card's member.
+     *
+     * @param  \Illuminate\Support\Collection  $data
+     * @return void
+     */
+    public function manageAlteration(Collection $data);
+
+    /**
      * Sync the patriarch with family card.
      *
      * @param  \Illuminate\Support\Collection  $data

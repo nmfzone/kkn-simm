@@ -1,7 +1,7 @@
 <header class="main-header">
   <a href="{{ route('dashboard.index') }}" class="logo">
     <span class="logo-mini"><b>G</b></span>
-    <span class="logo-lg"><b>Gunung Gajah</b></span>
+    <span class="logo-lg"><b>GunungGajah</b></span>
   </a>
 
   <nav class="navbar navbar-static-top" role="navigation">

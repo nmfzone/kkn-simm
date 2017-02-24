@@ -233,4 +233,18 @@ class Resident extends Model
     {
         return $this->belongsToMany(Disability::class);
     }
+
+    /**
+     * Determine if the resident is patriarch or not.
+     *
+     * @return boolean
+     */
+    public function amIPatriarch()
+    {
+        if (! is_null($this->familyCard())) {
+            return $this->attributes['id'] === $this->familyCard()->patriarch->id;
+        }
+
+        return false;
+    }
 }

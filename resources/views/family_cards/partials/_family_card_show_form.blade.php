@@ -38,7 +38,7 @@
 
 @section('input_patriarch')
   <div class="nude-input">
-    {{ $familyCard->patriarch->name }}
+    {{ $familyCard->patriarch->name }} ({{ $familyCard->patriarch->nik }})
   </div>
 @endsection
 
@@ -54,13 +54,13 @@
       </div>
     </div>
   @else
-    @foreach ($familyCard->nonPatriarch as $index => $resident)
+    @foreach ($familyCard->nonPatriarch as $resident)
       <div class="form-group">
-        <label class="col-md-4 control-label">Anggota {{ $index+1 }}</label>
+        <label class="col-md-4 control-label">Anggota</label>
 
         <div class="col-md-6">
           <div class="nude-input">
-            {{ $resident->name }}
+            {{ $resident->name }} ({{ $resident->nik }})
           </div>
         </div>
       </div>

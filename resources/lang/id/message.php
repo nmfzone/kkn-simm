@@ -49,6 +49,7 @@ return [
             'update' => 'Pengguna berhasil diperbarui.',
             'destroy' => 'Pengguna berhasil di hapus.',
             'banned' => 'Pengguna berhasil di banned.',
+            'unbanned' => 'Pengguna berhasil di unbanned.',
         ],
         'family_cards' => [
             'store' => 'Kartu Keluarga berhasil ditambahkan.',

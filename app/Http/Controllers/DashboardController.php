@@ -28,30 +28,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $educationAll = $this->buildPagination('education', Education::all());
-        $jobs = $this->buildPagination('job', Job::all());
-        $disabilities = $this->buildPagination('disability', Disability::all());
+        $educationAll = Education::all();
+        $jobs = Job::all();
+        $disabilities = Disability::all();
 
         return view('home', compact('educationAll', 'jobs', 'disabilities'));
-    }
-
-    public function buildPagination($name, $data, $perPage = 5, $baseRoute = null)
-    {
-        $data = paginate($data, $perPage, $name, $baseRoute
-            ? route('dashboard.index')
-            : $baseRoute
-        );
-
-        $appends = collect([
-            'education', 'job', 'disability',
-        ]);
-
-        $appends->each(function($append) use (&$data, $name) {
-            if ($append != $name) {
-                $data->appends($append, RequestFacade::get($append, 1));
-            }
-        });
-
-        return $data;
     }
 }

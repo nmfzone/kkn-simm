@@ -84,6 +84,8 @@ class FamilyCardsController extends Controller
 
         $familyCard = FamilyCard::create($request->all());
         $data = collect($request->all());
+
+        $this->familyCardService->manageAlteration($data);
         $this->familyCardService->syncPatriarch($data, $familyCard);
         $this->familyCardService->syncMembers($data, $familyCard);
 
@@ -141,6 +143,8 @@ class FamilyCardsController extends Controller
 
         $familyCard->update($request->all());
         $data = collect($request->all());
+
+        $this->familyCardService->manageAlteration($data);
         $this->familyCardService->syncPatriarch($data, $familyCard);
         $this->familyCardService->syncMembers($data, $familyCard);
 

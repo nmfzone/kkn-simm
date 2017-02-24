@@ -79,7 +79,7 @@ class Setting extends Model
             ],
             [
                 'Lansia',
-                is_null($rw) ? $produktif->get() : $produktif->RW($rw)->get(),
+                is_null($rw) ? $lansia->get() : $lansia->RW($rw)->get(),
             ],
         ]);
     }

@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', 'DashboardController@index')->name('dashboard.index');
         Route::get('/users/get-users', 'UsersController@getUsers')->name('users.getUsers');
         Route::post('/users/{user}/banned', 'UsersController@banned')->name('users.banned');
+        Route::post('/users/{user}/unbanned', 'UsersController@unbanned')->name('users.unbanned');
         Route::resource('/users', 'UsersController');
 
         Route::get('/family-cards/kadus/{kadus}', 'FamilyCardsController@showKadus')->name('family_cards.showKadus');
@@ -75,5 +76,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/villages/get-villages', 'VillagesController@getVillages')->name('villages.getVillages');
         Route::resource('/villages', 'VillagesController');
+
+        // Route::get('/surats/pindah-datang/{familyCard}', 'PrintController@createSuratPindahDatang')->name('surats.pindah_datang');
+    });
+
+    Route::group(['prefix' => 'api'], function () {
+        Route::get('/residents', 'Api\ResidentsApiController@index');
     });
 });

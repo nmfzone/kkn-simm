@@ -32,7 +32,7 @@ $factory->state(App\User::class, 'banned', function ($faker) {
 $factory->define(App\Resident::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'nik' => $faker->numberBetween(3310042305070000, 3310042305080000),
+        'nik' => $faker->numberBetween(3310042305010000, 3310042305080000),
         'gender' => $faker->randomElement(['L', 'P']),
         'date_of_birth' => $faker->dateTime,
         'hometown_id' => App\District::all()->random()->id,
@@ -46,7 +46,7 @@ $factory->define(App\FamilyCard::class, function (Faker\Generator $faker) {
     $rw = App\Setting::getRW()->random();
 
     return [
-        'number' => $faker->numberBetween(3310042305070000, 3310042305080000),
+        'number' => $faker->numberBetween(3310043007100000, 3310043007800000),
         'village_id' => App\Village::all()->random()->id,
         'kadus' => App\Setting::getKadus($rw)->first(),
         'rt' => App\Setting::getRT()->random(),

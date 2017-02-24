@@ -62,22 +62,22 @@
 @endsection
 
 @section('input_patriarch')
-  <select class="form-control search-resident" name="patriarch">
+  <select class="form-control search-resident search-patriarch" name="patriarch">
     @foreach(App\Resident::all() as $resident)
-      <option value="{{ $resident->id }}"
-        @if($resident == $familyCard->patriarch)
-          selected
-        @endif
-      >{{ $resident->name }}</option>
+      @if($resident == $familyCard->patriarch)
+        <option value="{{ $resident->id }}">{{ $resident->name }} ({{ $resident->nik }})</option>
+      @endif
     @endforeach
   </select>
 @endsection
 
 @section('input_family_member')
   <select class="form-control has_member" name="family_member">
+    @php($selected = false)
     @foreach (App\Setting::getSelection() as $selection)
       <option value="{{ $selection['id'] }}"
-        @if((old('family_member') == $selection['id']) || (($familyCard->memberTotal() > 0) && ($selection['id'] == 1)) || (($familyCard->memberTotal() == 0) && ($selection['id'] == 0)))
+        @if(!$selected && ((old('family_member') == $selection['id']) || (($familyCard->memberTotal() > 0) && ($selection['id'] == 1)) || (($familyCard->memberTotal() == 0) && ($selection['id'] == 0))))
+          @php($selected = true)
           selected
         @endif
       >{{ $selection['name'] }}</option>
@@ -86,13 +86,34 @@
 @endsection
 
 @section('input_family_member_id')
-  <select class="form-control search-resident" name="family_member_id[]">
-    @foreach(App\Resident::all() as $resident)
-      <option value="{{ $resident->id }}">{{ $resident->name }}</option>
-    @endforeach
-  </select>
+  <select class="form-control search-resident" name="family_member_id[]" style="width: 90%;"></select>
 @endsection
 
 @section('submit_message')
   Simpan
 @endsection
+
+@push('javascripts')
+  <script type="text/javascript">
+    $(function() {
+      $('.family_card_form').submit(function(e) {
+        e.preventDefault();
+        var form = e;
+
+        swal({
+          title             : 'Simpan perubahan?',
+          text              : 'Semua perubahan yang anda lakukan akan disimpan.',
+          type              : "warning",
+          showCancelButton  : true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText : 'Simpan',
+          closeOnConfirm    : true
+        }, function(confirm) {
+          if (confirm) {
+            e.currentTarget.submit();
+          }
+        });
+      });
+    });
+  </script>
+@endpush

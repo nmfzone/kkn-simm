@@ -146,10 +146,16 @@
     <div class="family-member">
       <div class="member-list">
         <div class="form-group">
-          <label class="col-md-4 control-label">Anggota 1</label>
+          <label class="col-md-4 control-label">Anggota</label>
 
-          <div class="col-md-6">
-            @yield('input_family_member_id')
+          <div class="col-md-5">
+            <div class="p-r-10" style="float: left; width: 95%">
+              @yield('input_family_member_id')
+            </div>
+
+            <div class="remove-resident" style="float: left" title="Hapus Anggota ini">
+              <i class="fa fa-close" style="cursor: pointer;font-size: 25px"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +166,7 @@
         <label class="col-md-4 control-label"></label>
 
         <div class="col-md-6">
-          <i class="fa fa-plus add-btn"></i>
+          <i class="fa fa-plus add-btn" style="cursor: pointer;" title="Tambah Anggota"></i>
         </div>
       </div>
     </div>
@@ -180,35 +186,87 @@
         });
 
         $('.search-village').select2();
-        $('.search-resident').select2();
+
+        function setSearchResident(el, appendIt) {
+          var el = el.select2({
+            ajax: {
+              dataType: 'json',
+              url: '{{ url('api/residents') }}',
+              delay: 250,
+              data: function(params) {
+                return {
+                  term: params.term
+                }
+              },
+              processResults: function (data, page) {
+                return {
+                  results: $.map(data, function (item) {
+                    return {
+                      text: item.name + ' (' + item.nik + ')',
+                      nik: item.nik,
+                      id: item.id
+                    }
+                  })
+                }
+              }
+            }
+          });
+
+          if (typeof appendIt !== 'undefined') {
+            $.ajax({
+              type: 'GET',
+              dataType: 'json',
+              url: '{{ url('api/residents') }}',
+              success: function(data) {
+                el.append("<option value='" + data[0].id + "'>" + data[0].name + " (" + data[0].nik +")</option>");
+              }
+            });
+          }
+
+          return el;
+        }
+        setSearchResident($('.search-resident'), true);
 
         $('.has_member').change(function(event) {
           var val = $(this).val();
           var target = $('.member-box');
 
-          if (val === "0") {
-            target.hide();
-          } else {
+          if (parseInt(val)) {
             target.show();
+          } else {
+            target.hide();
           }
         });
         $('.has_member').change();
 
-        function cloneAndSetSearchResident(val) {
+        function setRemoveResident(el) {
+          el.click(function() {
+            var memberLength = $('.family-member > .member-list').length;
+
+            if (memberLength > 1) {
+              $(this).parents('.member-list').remove();
+            }
+          });
+        }
+        setRemoveResident($('.remove-resident'));
+
+        function cloneAndSetSearchResident(resident) {
           var el = $('.family-member > .member-list').last();
           el.find('.search-resident').select2('destroy');
           var el_target = el.clone();
           var target = $('.family-member');
 
-          var label = el_target.find('.control-label');
-          label.text('Anggota ' + (parseInt(label.text().split(" ")[1])+1));
-          el.find('.search-resident').select2();
+          setSearchResident(el.find('.search-resident'));
           target.append(el_target);
-          el_target.find('.search-resident').select2();
+          setSearchResident(el_target.find('.search-resident'));
 
-          if (typeof val !== 'undefined') {
-            el_target.find('.search-resident').val(parseInt(val)).trigger('change.select2');
+          if (typeof resident !== 'undefined') {
+            el_target.find('.search-resident').html('');
+            el_target.find('.search-resident')
+              .append(`<option value='${resident.id}'>${resident.name} (${resident.nik})</option>`);
           }
+
+          setRemoveResident(el_target.find('.remove-resident'));
         }
 
         $('.add-btn').click(function(event) {
@@ -216,30 +274,47 @@
         });
 
         $('.family-member').ready(function() {
-          @php($familyMembers = old('family_member_id', isset($familyCard) ? $familyCard->nonPatriarch->pluck('id')->all() : null))
+          @php($familyMembers = old('family_member_id', isset($familyCard)
+            ? $familyCard->nonPatriarch->pluck('id')->all()
+            : null))
           var members = {!! (! is_null($familyMembers)
-            ? json_encode($familyMembers)
+            ? json_encode(App\Resident::whereIn('id', $familyMembers)->get())
             : '[]') !!};
           var el = $('.family-member > .member-list');
           var has_member = $('.has_member').val();
 
           if (members.length > 0 && has_member == 1) {
-            if (members.length == 1) {
-              el.eq(0).find('.search-resident').val(members[0]).trigger('change.select2');
-            } else {
-              $.each(members, function(key, val) {
-                val = parseInt(val);
-                if (key == 0) {
-                  el.eq(key).find('.search-resident').val(val).trigger('change.select2');
-                } else {
-                  cloneAndSetSearchResident(val);
-                }
-              });
-            }
+            $.each(members, function(key, resident) {
+              if (key == 0) {
+                el.eq(key).find('.search-resident')
+                  .append(`<option value='${resident.id}'>${resident.name} (${resident.nik})</option>`);
+              } else {
+                cloneAndSetSearchResident(resident);
+              }
+            });
           }
         });
+
+        @if(Route::is('family_cards.edit'))
+          $('.search-patriarch').ready(function() {
+            @php($patriarch = old('patriarch', isset($familyCard)
+              ? $familyCard->patriarch->id
+              : null))
+            var patriarch = {!! (! is_null($patriarch)
+              ? json_encode(App\Resident::find($patriarch))
+              : 'none') !!};
+
+            var el = setSearchResident($('.search-patriarch'));
+
+            if ('none' !== patriarch) {
+              el.append(`<option value='${patriarch.id}'>${patriarch.name} (${patriarch.nik})</option>`);
+            }
+          });
+        @endif
       });
     </script>
+
+    @stack('javascripts')
   @endsection
 
   {!! csrf_field() !!}

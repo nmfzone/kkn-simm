@@ -56,7 +56,7 @@
           { data: 'position', name: 'position' },
           { data: 'photo_url', name: 'photo_url', defaultContent: '-',
             render: function ( data, type, full, meta ) {
-              return `<img src="${data}" height="50" />`;
+              return `<img class="img-circle" src="${data}" height="50" />`;
             }
           },
           { data: 'action', name: 'action', orderable: false, searchable: false, width: '250px' }

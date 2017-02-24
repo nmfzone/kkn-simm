@@ -16,7 +16,7 @@
 					<div class="panel-heading">{{ trans('message.family_cards.edit') }}</div>
 
 					<div class="panel-body">
-            <form class="form-horizontal" role="form" enctype="multipart/form-data" method="POST" action="{{ route('family_cards.update', $familyCard) }}">
+            <form class="form-horizontal family_card_form" role="form" enctype="multipart/form-data" method="POST" action="{{ route('family_cards.update', $familyCard) }}">
 
               {{ method_field('PUT') }}
               @include('family_cards.partials._family_card_edit_form')

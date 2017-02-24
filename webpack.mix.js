@@ -17,7 +17,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .less('resources/assets/less/adminlte-app.less', 'public/css')
    .less('node_modules/toastr/toastr.less', 'public/css')
    .copy('node_modules/admin-lte/dist/css/AdminLTE.css', 'public/css/adminlte-less.css')
-   .combine([
+   .styles([
      'public/css/app.css',
      'node_modules/admin-lte/dist/css/skins/_all-skins.css',
      'public/css/adminlte-less.css',

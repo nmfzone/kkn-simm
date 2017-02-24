@@ -31,12 +31,28 @@ class FamilyCardsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(FamilyCard::class, 5)->create()->each(function($familyCard) {
-            $data = collect([
-                'patriarch' => App\Resident::all()->random()->id,
+        $number = 3310043007100000;
+
+        foreach (range(1, 900) as $item) {
+            $familyCard = factory(FamilyCard::class)->create([
+                'number' => $number++,
             ]);
 
-            $this->familyCardService->syncPatriarch($data, $familyCard);
-        });
+            $patriarchData = collect([
+                'patriarch' => App\Resident::whereHas('familyCards', null, '=', 0)
+                    ->first()->id,
+            ]);
+
+            $membersData = collect([
+                'family_member' => true,
+                'family_member_id' => Resident::whereHas('familyCards', null, '=', 0)
+                    ->where('id', '!=', $patriarchData->get('patriarch'))
+                    ->take(4)->pluck('id')
+                    ->all(),
+            ]);
+
+            $this->familyCardService->syncPatriarch($patriarchData, $familyCard);
+            $this->familyCardService->syncMembers($membersData, $familyCard);
+        }
     }
 }

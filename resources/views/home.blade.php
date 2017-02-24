@@ -7,6 +7,7 @@
 @section('stylesheets')
   <link rel="stylesheet" href="{{ url('plugins/iCheck/flat/blue.css') }}">
   <link rel="stylesheet" href="{{ url('plugins/morris/morris.css') }}">
+  <link href="{{ asset('/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('main-content')
@@ -93,7 +94,7 @@
           <div class="col-md-4">
             <div class="small-box{{ ' ' . $colors[$index] }}">
               <div class="inner">
-                <h3>{{ App\Resident::kadus($value)->count() }}</h3>
+                <h3>{{ App\FamilyCard::kadus($value)->count() }}</h3>
                 <p>{{ $value }}</p>
               </div>
               <div class="icon">
@@ -138,10 +139,6 @@
                   @endif
                 </tbody>
               </table>
-
-              <div class="pull-right">
-                {{ $educationAll->links() }}
-              </div>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
         </div><!-- /.col -->
@@ -174,10 +171,6 @@
                   @endif
                 </tbody>
               </table>
-
-              <div class="pull-right">
-                {{ $jobs->links() }}
-              </div>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
         </div><!-- /.col -->
@@ -210,10 +203,6 @@
                   @endif
                 </tbody>
               </table>
-
-              <div class="pull-right">
-                {{ $disabilities->links() }}
-              </div>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
         </div><!-- /.col -->
@@ -234,24 +223,14 @@
   <script src="{{ url('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
   <script src="{{ url('plugins/fastclick/fastclick.min.js') }}"></script>
   <script>
-    $('.example2').DataTable({
+    $('.the-tables').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
-      "ordering": false,
       "info": false,
       "autoWidth": false,
-      "pageLength" : 10
-    });
-
-    $('.KartuKeluarga').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": false,
-      "info": true,
-      "autoWidth": false,
-      "pageLength" : 15
+      "pageLength" : 5,
+      "pagingType": "simple"
     });
 
     var donut = new Morris.Donut({

@@ -129,4 +129,66 @@ $(function() {
     }
   };
   banned.init();
+
+  var unbanned = {
+    elementSelector       : ".the-tables",
+    classSelector         : ".unbanned-this",
+    modalTitle            : "Apa anda yakin?",
+    modalMessage          : "Pengguna akan di unbanned.",
+    modalConfirmButtonText: "Ya, unbanned sekarang!",
+    laravelToken          : null,
+    url                   : "/",
+
+    init: function() {
+      $(this.elementSelector).on('click', this.classSelector, {self:this}, this.handleClick);
+    },
+
+    handleClick: function(event) {
+      event.preventDefault();
+
+      var self = event.data.self;
+      var link = $(this);
+
+      self.modalTitle             = link.data('title') || self.modalTitle;
+      self.modalMessage           = link.data('message') || self.modalMessage;
+      self.modalConfirmButtonText = link.data('button-text') || self.modalConfirmButtonText;
+      self.url                    = link.attr('href');
+      self.laravelToken           = $("meta[name=csrf-token]").attr('content');
+
+      self.confirmUnbanned();
+    },
+
+    confirmUnbanned: function() {
+      swal({
+        title             : this.modalTitle,
+        text              : this.modalMessage,
+        type              : "warning",
+        showCancelButton  : true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText : this.modalConfirmButtonText,
+        closeOnConfirm    : true
+      },
+      function() {
+        this.makeUnbannedRequest()
+      }.bind(this));
+    },
+
+    makeUnbannedRequest: function() {
+      var form =
+        $('<form>', {
+          'method': 'POST',
+          'action': this.url
+        });
+
+      var token =
+        $('<input>', {
+          'type': 'hidden',
+          'name': '_token',
+          'value': this.laravelToken
+        });
+
+      return form.append(token).appendTo('body').submit();
+    }
+  };
+  unbanned.init();
 });

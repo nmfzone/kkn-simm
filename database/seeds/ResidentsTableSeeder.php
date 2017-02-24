@@ -12,6 +12,12 @@ class ResidentsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Resident::class, 50)->create();
+        $nik = 3310042305010000;
+
+        foreach (range(1, 5000) as $item) {
+            factory(Resident::class)->create([
+                'nik' => $nik++,
+            ]);
+        }
     }
 }

@@ -46,11 +46,7 @@
 @endsection
 
 @section('input_patriarch')
-  <select class="form-control search-resident" name="patriarch">
-    @foreach(App\Resident::all() as $resident)
-      <option value="{{ $resident->id }}">{{ $resident->name }}</option>
-    @endforeach
-  </select>
+  <select class="form-control search-resident" name="patriarch"></select>
 @endsection
 
 @section('input_family_member')
@@ -66,13 +62,34 @@
 @endsection
 
 @section('input_family_member_id')
-  <select class="form-control search-resident" name="family_member_id[]">
-    @foreach(App\Resident::all() as $resident)
-      <option value="{{ $resident->id }}">{{ $resident->name }}</option>
-    @endforeach
-  </select>
+  <select class="form-control search-resident" name="family_member_id[]"></select>
 @endsection
 
 @section('submit_message')
     Tambah Kartu Keluarga
 @endsection
+
+@push('javascripts')
+  <script type="text/javascript">
+    $(function() {
+      $('.family_card_form').submit(function(e) {
+        e.preventDefault();
+        var form = e;
+
+        swal({
+          title             : 'Tambah Kartu Keluarga?',
+          text              : 'Kartu Keluarga sebelumnya akan dihapus jika Kepala Keluarga saat ini menjadi Kepala Keluarga pada Kartu Keluarga yang lain. Selain itu, setiap penduduk yang akan membuat Kartu Keluarga baru, maka akan dihapus keanggotaannya dari Kartu Keluarga lama.',
+          type              : "warning",
+          showCancelButton  : true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText : 'Tambah',
+          closeOnConfirm    : true
+        }, function(confirm) {
+          if (confirm) {
+            e.currentTarget.submit();
+          }
+        });
+      });
+    });
+  </script>
+@endpush

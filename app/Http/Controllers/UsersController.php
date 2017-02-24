@@ -175,6 +175,24 @@ class UsersController extends Controller
     }
 
     /**
+     * Unbanned the specified resource from the app.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function unbanned(User $user)
+    {
+        $this->authorize('users.banned');
+
+        $user->is_banned = false;
+        $user->save();
+
+        alert()->success(trans('message.ctrl.users.unbanned'))->persistent("Close");
+
+        return redirect(route('users.index'));
+    }
+
+    /**
      * Get all users by ajax request.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -184,7 +202,11 @@ class UsersController extends Controller
         return Datatables::of(User::all())
             ->addColumn('action', function ($user) {
                 $action = '<a href="'. route('users.edit', $user) .'" class="btn btn-xs btn-primary m-l-10"><i class="fa fa-edit"></i> Edit</a>';
-                $action .= '<a href="'. route('users.banned', $user) .'" class="btn btn-xs btn-warning banned-this m-l-10"><i class="fa fa-warning"></i> Banned</a>';
+                if ($user->is_banned) {
+                    $action .= '<a href="'. route('users.unbanned', $user) .'" class="btn btn-xs btn-warning unbanned-this m-l-10"><i class="fa fa-warning"></i> Unbanned</a>';
+                } else {
+                    $action .= '<a href="'. route('users.banned', $user) .'" class="btn btn-xs btn-warning banned-this m-l-10"><i class="fa fa-warning"></i> Banned</a>';
+                }
                 $action .= '<a href="'. route('users.destroy', $user) .'" class="btn btn-xs btn-primary delete-this m-l-10"><i class="fa fa-remove"></i> Hapus</a>';
                 return $action;
             })
